@@ -17,9 +17,9 @@ package cmd
 
 import (
 	"fmt"
-
-	"github.com/spf13/cobra"
 	"github.com/bomoko/lagoon-facts/gatherers"
+	"github.com/spf13/cobra"
+	"log"
 )
 
 // gatherCmd represents the gather command
@@ -59,8 +59,36 @@ to quickly create a Cobra application.`,
 	},
 }
 
+// gatherCmd represents the gather command
+var tokenCmd = &cobra.Command{
+	Use:   "token",
+	Short: "Grab an ssh token",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		//token, err := utils.GetToken()
+		//if err != nil {
+		//	log.Printf(err.Error())
+		//	return
+		//}
+		//fmt.Println(token)
+		id, err := gatherers.GetEnvironmentId("heks_ch")
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		fmt.Printf("ID : %v", id)
+		return
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(gatherCmd)
+	rootCmd.AddCommand(tokenCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -22,7 +22,6 @@ func (p phpGatherer) AppliesToEnvironment() bool {
 func (p phpGatherer) GatherFacts() ([]GatheredFact, error) {
 	return []GatheredFact{
 		{
-			Environment: "test",
 			Name: "php-version",
 			Value: p.phpVersion,
 			Source: "php-version",
