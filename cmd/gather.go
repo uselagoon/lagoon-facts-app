@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"github.com/bomoko/lagoon-facts/gatherers"
 	"github.com/spf13/cobra"
-	"log"
 )
 
 // gatherCmd represents the gather command
@@ -76,12 +75,35 @@ to quickly create a Cobra application.`,
 		//	return
 		//}
 		//fmt.Println(token)
-		id, err := gatherers.GetEnvironmentId("heks_ch")
-		if err != nil {
-			log.Println(err.Error())
-			return
-		}
-		fmt.Printf("ID : %v", id)
+		//id, err := gatherers.GetEnvironmentId("heks_ch")
+		//if err != nil {
+		//	log.Println(err.Error())
+		//	return
+		//}
+		//fmt.Printf("ID : %v", id)
+
+		var gatheredFacts []gatherers.GatheredFact
+
+		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
+			Environment: 64091,
+			Name:        "test1",
+			Value:       "1",
+			Source:      "test",
+			Description: "a test",
+		})
+
+		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
+			Environment: 64091,
+			Name:        "test2",
+			Value:       "2",
+			Source:      "test",
+			Description: "a second test",
+		})
+
+		//gatherers.Writefacts("amazeelabsv4_com", "dev", gatheredFacts)
+		//gatherers.GetProjectId("amazeelabsv4_com")
+		//gatherers.GetEnvironmentId(333, "dev")
+		gatherers.DeleteFactsBySource(64091, "test")
 		return
 	},
 }

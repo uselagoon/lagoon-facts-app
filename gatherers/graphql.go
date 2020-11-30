@@ -2,20 +2,78 @@ package gatherers
 
 import (
 	"context"
-	"fmt"
-	"github.com/bomoko/lagoon-facts/utils"
-	"github.com/shurcooL/graphql"
-	"golang.org/x/oauth2"
 	"log"
-	"os"
+
+	//"fmt"
+	"github.com/bomoko/lagoon-facts/utils"
+	"github.com/machinebox/graphql"
+	"golang.org/x/oauth2"
+	//"log"
+	//"os"
 )
 
 const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
 
-func Writefacts(environmentName string, facts []GatheredFact) error {
-
-	//let's grab all the environments we'll need (for now it'll almost certainly just be a single one
-	//but we support multiple environments
+func Writefacts(projectName string, environmentName string, facts []GatheredFact) error {
+	//
+	//projectId, err := GetProjectId(projectName)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//environmentId, err := GetEnvironmentId(projectId, environmentName)
+	//
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//
+	//sources := map[string]string{}
+	//
+	//for i,e := range facts{
+	//	e.Environment = environmentId
+	//	facts[i] = e
+	//	if sources[e.Source] == "" {
+	//		sources[e.Source] = e.Source
+	//	}
+	//}
+	//
+	//for _, e := range sources {
+	//	log.Println(e)
+	//	err = DeleteFactsBySource(environmentId, e)
+	//	if err != nil {
+	//		log.Println(err.Error())
+	//	}
+	//}
+	//
+	//client, err := getGraphqlClient()
+	//if err != nil {
+	//	return err
+	//}
+	//var addFactMutation struct{
+	//	AddFacts struct{
+	//		Id graphql.Int
+	//	} `graphql:"addFact(input:{name: $name, environment: $environment, value: $value, description: $description, source: $source})"`
+	//}
+	//
+	//
+	////factsMarshalledString, err := json.Marshal(facts)
+	////if err != nil {
+	////	return err
+	////}
+	//for _, e := range facts {
+	//	err = client.Mutate(context.Background(), &addFactMutation, map[string]interface{}{
+	//		"name": graphql.String(e.Name),
+	//		"environment": graphql.Int(e.Environment),
+	//		"value": graphql.String(e.Value),
+	//		"description": graphql.String(e.Description),
+	//		"source": graphql.String(e.Source),
+	//	})
+	//
+	//	if err != nil {
+	//		log.Println(err.Error())
+	//	}
+	//}
 
 	return nil
 }
@@ -33,11 +91,11 @@ func getGraphqlClient() (*graphql.Client, error) {
 		TokenType:   "Bearer",
 	}))
 
-	client := graphql.NewClient(lagoonAPIEndpoint, httpClient)
+	client := graphql.NewClient(lagoonAPIEndpoint, graphql.WithHTTPClient(httpClient))
 	return client, nil
 }
 
-func GetEnvironmentId(environmentName string) (int, error) {
+func GetProjectId(projectName string) (int, error) {
 
 	client, err := getGraphqlClient()
 	if err != nil {
@@ -45,18 +103,90 @@ func GetEnvironmentId(environmentName string) (int, error) {
 	}
 
 	var projectQuery struct {
-		ProjectName struct {
-			Id graphql.Int
-		} `graphql:"projectByName(name: $name)"`
+		ProjectByName struct {
+			Id int
+		}
 	}
 
-	err = client.Query(context.Background(), &projectQuery, map[string]interface{}{
-		"name": graphql.String(environmentName),
-	})
-	if err != nil {
-		log.Printf(err.Error())
-		os.Exit(1)
+	req := graphql.NewRequest(`
+	query getProjectByName($name: String!) {
+		projectByName (name: $name) {
+			id
+		}
 	}
-	fmt.Printf("id : %v", projectQuery.ProjectName.Id)
-	return int(projectQuery.ProjectName.Id), nil
+`)
+	req.Var("name", projectName)
+
+	ctx := context.Background()
+
+	if err := client.Run(ctx, req, &projectQuery); err != nil {
+		log.Fatal(err)
+	}
+
+	return int(projectQuery.ProjectByName.Id), nil
+}
+
+func GetEnvironmentId(projectId int, environmentName string) (int, error) {
+
+	client, err := getGraphqlClient()
+	if err != nil {
+		return 0, err
+	}
+
+	var environmentQuery struct {
+		EnvironmentByName struct {
+			Id int
+			Name string
+		}
+	}
+
+	req := graphql.NewRequest(`
+	query getEnvironmentByName($project: Int!, $name: String!) {
+		environmentByName (project: $project, name: $name) {
+			id
+			name
+		}
+	}
+`)
+
+	req.Var("project", projectId)
+	req.Var("name", environmentName)
+
+	ctx := context.Background()
+
+	if err := client.Run(ctx, req, &environmentQuery); err != nil {
+		return 0, err
+	}
+
+	return int(environmentQuery.EnvironmentByName.Id), nil
+}
+
+func DeleteFactsBySource(environmentId int, source string) error {
+
+	client, err := getGraphqlClient()
+	if err != nil {
+		return err
+	}
+
+	var responseText struct{
+		Data string
+	}
+
+	req := graphql.NewRequest(`
+	mutation deleteFactsFromSourceMutation($environment: Int!, $source: String!) {
+		deleteFactsFromSource(input: {environment: $environment, source: $source})
+	}
+`)
+
+	req.Var("environment", environmentId)
+	req.Var("source", source)
+
+	ctx := context.Background()
+
+	if err := client.Run(ctx, req, &responseText); err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
 }
