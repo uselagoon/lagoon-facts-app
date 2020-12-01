@@ -16,10 +16,15 @@ limitations under the License.
 package cmd
 
 import (
+	"log"
+	"os"
 	"fmt"
 	"github.com/bomoko/lagoon-facts/gatherers"
 	"github.com/spf13/cobra"
 )
+
+var projectName string
+var environment string
 
 // gatherCmd represents the gather command
 var gatherCmd = &cobra.Command{
@@ -33,14 +38,28 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		//get the basic env vars
+		if projectName == "" {
+			projectName = os.Getenv("LAGOON_PROJECT")
+		}
+		if projectName == "" {
+			projectName = os.Getenv("LAGOON_SAFE_PROJECT")
+		}
+		if environment == "" {
+			environment = os.Getenv("LAGOON_GIT_BRANCH")
+		}
+
+		if environment == "" || projectName == "" {
+			log.Fatalf("PROJECT OR ENVIRONMENT NOT SET - exiting")
+			os.Exit(1)
+		}
+
 		//run the gatherers...
 		gathererSlice := gatherers.GetGatherers()
 		fmt.Println(gathererSlice)
 		//
 		var facts []gatherers.GatheredFact
 
-
-		//var facts gatherers.GatheredFact
 
 		for _, e := range gathererSlice {
 			if e.AppliesToEnvironment() {
@@ -52,8 +71,11 @@ to quickly create a Cobra application.`,
 				facts = append(facts, gatheredFacts...)
 			}
 		}
-		for _, e := range facts {
-			fmt.Println(e.Value)
+
+		err := gatherers.Writefacts(projectName, environment, facts)
+
+		if err != nil {
+			log.Println(err.Error())
 		}
 	},
 }
@@ -85,25 +107,23 @@ to quickly create a Cobra application.`,
 		var gatheredFacts []gatherers.GatheredFact
 
 		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
-			Environment: 64091,
 			Name:        "test1",
 			Value:       "1",
 			Source:      "test",
-			Description: "a test",
+			Description: "a new test",
 		})
 
 		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
-			Environment: 64091,
 			Name:        "test2",
 			Value:       "2",
 			Source:      "test",
-			Description: "a second test",
+			Description: "a second new test",
 		})
 
-		//gatherers.Writefacts("amazeelabsv4_com", "dev", gatheredFacts)
+		gatherers.Writefacts("amazeelabsv4_com", "dev", gatheredFacts)
 		//gatherers.GetProjectId("amazeelabsv4_com")
 		//gatherers.GetEnvironmentId(333, "dev")
-		gatherers.DeleteFactsBySource(64091, "test")
+		//gatherers.DeleteFactsBySource(64091, "test")
 		return
 	},
 }

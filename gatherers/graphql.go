@@ -2,79 +2,80 @@ package gatherers
 
 import (
 	"context"
+	"fmt"
 	"log"
 
-	//"fmt"
 	"github.com/bomoko/lagoon-facts/utils"
 	"github.com/machinebox/graphql"
 	"golang.org/x/oauth2"
-	//"log"
-	//"os"
 )
 
 const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
 
 func Writefacts(projectName string, environmentName string, facts []GatheredFact) error {
-	//
-	//projectId, err := GetProjectId(projectName)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//environmentId, err := GetEnvironmentId(projectId, environmentName)
-	//
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//
-	//sources := map[string]string{}
-	//
-	//for i,e := range facts{
-	//	e.Environment = environmentId
-	//	facts[i] = e
-	//	if sources[e.Source] == "" {
-	//		sources[e.Source] = e.Source
-	//	}
-	//}
-	//
-	//for _, e := range sources {
-	//	log.Println(e)
-	//	err = DeleteFactsBySource(environmentId, e)
-	//	if err != nil {
-	//		log.Println(err.Error())
-	//	}
-	//}
-	//
-	//client, err := getGraphqlClient()
-	//if err != nil {
-	//	return err
-	//}
-	//var addFactMutation struct{
-	//	AddFacts struct{
-	//		Id graphql.Int
-	//	} `graphql:"addFact(input:{name: $name, environment: $environment, value: $value, description: $description, source: $source})"`
-	//}
-	//
-	//
-	////factsMarshalledString, err := json.Marshal(facts)
-	////if err != nil {
-	////	return err
-	////}
-	//for _, e := range facts {
-	//	err = client.Mutate(context.Background(), &addFactMutation, map[string]interface{}{
-	//		"name": graphql.String(e.Name),
-	//		"environment": graphql.Int(e.Environment),
-	//		"value": graphql.String(e.Value),
-	//		"description": graphql.String(e.Description),
-	//		"source": graphql.String(e.Source),
-	//	})
-	//
-	//	if err != nil {
-	//		log.Println(err.Error())
-	//	}
-	//}
 
+	projectId, err := GetProjectId(projectName)
+	if err != nil {
+		return err
+	}
+
+	environmentId, err := GetEnvironmentId(projectId, environmentName)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(facts)
+
+	sources := map[string]string{}
+
+	for i,e := range facts{
+		e.Environment = environmentId
+		facts[i] = e
+		if sources[e.Source] == "" {
+			sources[e.Source] = e.Source
+		}
+	}
+
+	for _, e := range sources {
+		log.Println(e)
+		err = DeleteFactsBySource(environmentId, e)
+		if err != nil {
+			log.Println(err.Error())
+		}
+	}
+
+	client, err := getGraphqlClient()
+	if err != nil {
+		return err
+	}
+	var addFactMutation struct{
+		AddFacts []struct{
+			Id int
+		}
+	}
+
+	req := graphql.NewRequest(`
+	mutation addFactMutation($facts: AddFactsInput!) {
+  addFacts(input: $facts) {
+    id
+  }
+}
+`)
+
+	var factInput struct{
+		Facts []GatheredFact `json:"facts"`
+	}
+	factInput.Facts = facts
+
+	req.Var("facts",factInput)
+
+	ctx := context.Background()
+
+	if err := client.Run(ctx, req, &addFactMutation); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(addFactMutation)
 	return nil
 }
 
