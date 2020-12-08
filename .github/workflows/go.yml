@@ -30,5 +30,10 @@ jobs:
         fi
 
     - name: Build
-      run: CGO_ENABLED=0 go build -v ./...
-
+      run: CGO_ENABLED=0 go build -o /tmp/lagoon-facts -v ./...
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.0
+      with:
+       name: lagoon-facts
+       path: /tmp/lagoon-facts
