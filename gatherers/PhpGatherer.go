@@ -20,12 +20,20 @@ func (p phpGatherer) AppliesToEnvironment() bool {
 }
 
 func (p phpGatherer) GatherFacts() ([]GatheredFact, error) {
+
+	err, stdOut, stdErr := utils.Shellout("php -r \"echo phpversion();\"")
+
+	if err != nil {
+		log.Printf("PhpVersion gatherer cannot be retrieved: %v", stdErr)
+		return []GatheredFact{}, err
+	}
+
+
 	return []GatheredFact{
 		{
-			Environment: "test",
 			Name: "php-version",
-			Value: p.phpVersion,
-			Source: "php-version",
+			Value: stdOut,
+			Source: "php-details",
 			Description: "This is the current running php version on the system",
 		},
 	}, nil

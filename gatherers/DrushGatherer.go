@@ -34,7 +34,6 @@ func (p drushGatherer) AppliesToEnvironment() bool {
 func (p drushGatherer) GatherFacts() ([]GatheredFact, error) {
 	return []GatheredFact{
 		{
-			Environment: "test",
 			Name: "drush-version",
 			Value: p.DrupalVersion,
 			Source: "drush-status",
@@ -44,5 +43,5 @@ func (p drushGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init()  {
-	RegisterGatherer(drushGatherer{})
+	//RegisterGatherer(drushGatherer{})
 }
