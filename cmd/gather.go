@@ -1,21 +1,7 @@
-/*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
+	"github.com/bomoko/lagoon-facts/utils"
 	"log"
 	"os"
 	"fmt"
@@ -57,7 +43,6 @@ to quickly create a Cobra application.`,
 		//run the gatherers...
 		gathererSlice := gatherers.GetGatherers()
 		fmt.Println(gathererSlice)
-		//
 		var facts []gatherers.GatheredFact
 
 
@@ -91,39 +76,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//token, err := utils.GetToken()
-		//if err != nil {
-		//	log.Printf(err.Error())
-		//	return
-		//}
-		//fmt.Println(token)
-		//id, err := gatherers.GetEnvironmentId("heks_ch")
-		//if err != nil {
-		//	log.Println(err.Error())
-		//	return
-		//}
-		//fmt.Printf("ID : %v", id)
-
-		var gatheredFacts []gatherers.GatheredFact
-
-		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
-			Name:        "test1",
-			Value:       "1",
-			Source:      "test",
-			Description: "a new test",
-		})
-
-		gatheredFacts = append(gatheredFacts, gatherers.GatheredFact{
-			Name:        "test2",
-			Value:       "2",
-			Source:      "test",
-			Description: "a second new test",
-		})
-
-		gatherers.Writefacts("amazeelabsv4_com", "dev", gatheredFacts)
-		//gatherers.GetProjectId("amazeelabsv4_com")
-		//gatherers.GetEnvironmentId(333, "dev")
-		//gatherers.DeleteFactsBySource(64091, "test")
+		token, err := utils.GetToken()
+		if err != nil {
+			log.Printf(err.Error())
+			return
+		}
+		fmt.Println(token)
 		return
 	},
 }
