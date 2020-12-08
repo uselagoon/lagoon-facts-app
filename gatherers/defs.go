@@ -18,9 +18,8 @@ type Gatherer interface {
 
 var gathererInternalMap []Gatherer
 
-func RegisterGatherer(gatherer Gatherer) {
-	log.Print("registering: ")
-	log.Println(gatherer)
+func RegisterGatherer(name string, gatherer Gatherer) {
+	log.Print("registering: " + name)
 	gathererInternalMap = append(gathererInternalMap, gatherer)
 }
 
