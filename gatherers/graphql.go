@@ -2,7 +2,6 @@ package gatherers
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/bomoko/lagoon-facts/utils"
@@ -25,8 +24,6 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 		return err
 	}
 
-	fmt.Println(facts)
-
 	sources := map[string]string{}
 
 	for i,e := range facts{
@@ -38,7 +35,7 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 	}
 
 	for _, e := range sources {
-		log.Println(e)
+		log.Println("Clearing source: " + e)
 		err = DeleteFactsBySource(environmentId, e)
 		if err != nil {
 			log.Println(err.Error())
@@ -75,7 +72,7 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 	if err := client.Run(ctx, req, &addFactMutation); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(addFactMutation)
+
 	return nil
 }
 

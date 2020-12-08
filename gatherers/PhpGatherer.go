@@ -6,33 +6,25 @@ import (
 )
 
 type phpGatherer struct {
-	phpVersion string
+	PhpVersion string
 }
 
-func (p phpGatherer) AppliesToEnvironment() bool {
+func (p *phpGatherer) AppliesToEnvironment() bool {
 	err, stdOut, stdErr := utils.Shellout("php -r \"echo phpversion();\"")
 	if err != nil {
 		log.Printf("PhpVersion gatherer cannot be applied: %v", stdErr)
 		return false
 	}
-	p.phpVersion = stdOut
+	p.PhpVersion = stdOut
 	return true
 }
 
-func (p phpGatherer) GatherFacts() ([]GatheredFact, error) {
-
-	err, stdOut, stdErr := utils.Shellout("php -r \"echo phpversion();\"")
-
-	if err != nil {
-		log.Printf("PhpVersion gatherer cannot be retrieved: %v", stdErr)
-		return []GatheredFact{}, err
-	}
-
+func (p *phpGatherer) GatherFacts() ([]GatheredFact, error) {
 
 	return []GatheredFact{
 		{
 			Name: "php-version",
-			Value: stdOut,
+			Value: p.PhpVersion,
 			Source: "php-details",
 			Description: "This is the current running php version on the system",
 		},
@@ -40,5 +32,5 @@ func (p phpGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init()  {
-	RegisterGatherer(phpGatherer{})
+	RegisterGatherer("Php Version Gatherer", &phpGatherer{})
 }

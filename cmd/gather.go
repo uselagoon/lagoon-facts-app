@@ -42,7 +42,7 @@ to quickly create a Cobra application.`,
 
 		//run the gatherers...
 		gathererSlice := gatherers.GetGatherers()
-		fmt.Println(gathererSlice)
+
 		var facts []gatherers.GatheredFact
 
 
@@ -50,7 +50,7 @@ to quickly create a Cobra application.`,
 			if e.AppliesToEnvironment() {
 				gatheredFacts, err := e.GatherFacts()
 				if err != nil {
-					fmt.Println(err.Error())
+					log.Println(err.Error())
 					continue
 				}
 				facts = append(facts, gatheredFacts...)
