@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"github.com/bomoko/lagoon-facts/utils"
-	"log"
-	"os"
-	"fmt"
 	"github.com/bomoko/lagoon-facts/gatherers"
 	"github.com/spf13/cobra"
+	"log"
+	"os"
 )
 
 var projectName string
@@ -15,13 +13,8 @@ var environment string
 // gatherCmd represents the gather command
 var gatherCmd = &cobra.Command{
 	Use:   "gather",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Running this command will invoke the registered gatherers",
+	Long: `Running all the registered gatherers will inspect the system and write FACT data back to the Lagoon insights system`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		//get the basic env vars
@@ -65,38 +58,6 @@ to quickly create a Cobra application.`,
 	},
 }
 
-// gatherCmd represents the gather command
-var tokenCmd = &cobra.Command{
-	Use:   "token",
-	Short: "Grab an ssh token",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		token, err := utils.GetToken()
-		if err != nil {
-			log.Printf(err.Error())
-			return
-		}
-		fmt.Println(token)
-		return
-	},
-}
-
 func init() {
 	rootCmd.AddCommand(gatherCmd)
-	rootCmd.AddCommand(tokenCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// gatherCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// gatherCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

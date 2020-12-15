@@ -16,6 +16,7 @@ func (p *phpGatherer) AppliesToEnvironment() bool {
 		return false
 	}
 	p.PhpVersion = stdOut
+	log.Printf("Found PHP version: %v", p.PhpVersion)
 	return true
 }
 
