@@ -11,5 +11,5 @@ We run through each fact Gatherer, which determines whether it is able to be run
 
 As mentioned above, creating a new gatherer is fairly simple.
 
-Look at the requirements of the (`Gatherer` interface)[https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/defs.go#L14] and implement the `AppliesToEnvironment` and `GatherFacts` functions on a new structure.
-Then register the new gatherer by calling `RegisterGatherer` (for example, (here)[https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/DrushGatherer.go#L56])
+Look at the requirements of the [`Gatherer` interface](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/defs.go#L14) and implement the `AppliesToEnvironment` and `GatherFacts` functions on a new structure.
+Then register the new gatherer by calling `RegisterGatherer` (for example, [here](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/DrushGatherer.go#L56))
