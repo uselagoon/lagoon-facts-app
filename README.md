@@ -42,12 +42,12 @@ However, most normal circumstances this will fail to run, as the gather will try
 You can preface the command with these environment variables, this will allow it to continue.
 
 ```bash
-$ LAGOON_PROJECT=[proejct_name] LAGOON_GIT_BRANCH=[git_branch] go run main.go gather
+$ LAGOON_PROJECT=[project_name] LAGOON_GIT_BRANCH=[git_branch] go run main.go gather
 ```
 
 Although you will be doing a scan of your local machine, and will send this information as facts up to which ever project has been set.
 
-**Not recommend** but might be required for some testing.
+**Not recommended** but might be required for some testing.
 
 The recommended way to use this application is from inside a lagoon container, assuming this container does not have go installed you will need to [build](#building) the application.
 
