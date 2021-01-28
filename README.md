@@ -37,7 +37,7 @@ $ go run main.go [command]
 $ go run main.go gather # run the gather command
 ```
 
-However, most normal circumstances this will fail to run, as the gather it will try to look for environment variables.
+However, most normal circumstances this will fail to run, as the gather will try to look for environment variables.
 
 You can preface the command with these environment variables, this will allow it to continue.
 
