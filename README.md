@@ -7,9 +7,68 @@ Each fact is determined by a "gatherer", essentially an object that implements t
 
 We run through each fact Gatherer, which determines whether it is able to be run in the current environment, and, if so, it gathers its facts. These are then written back to Lagoon.
 
-### Extending - adding a new gatherer
+## Table of Contents
+
+* [Setup](#setup)
+* [Extending](#extending)
+    * [Adding a new gatherer](#adding-a-new-gatherer)
+* [Running](#running)
+* [Building](#building)
+
+## Setup
+
+The application is written in Go (GoLang), for more information about setting this up please see [https://golang.org/](https://golang.org/).
+
+## Extending
+
+### Adding a new gatherer
 
 As mentioned above, creating a new gatherer is fairly simple.
 
 Look at the requirements of the [`Gatherer` interface](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/defs.go#L14) and implement the `AppliesToEnvironment` and `GatherFacts` functions on a new structure.
 Then register the new gatherer by calling `RegisterGatherer` (for example, [here](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/DrushGatherer.go#L56))
+
+## Running
+
+To run the application you can use the following:
+
+```bash
+$ go run main.go [command] 
+$ go run main.go gather # run the gather command
+```
+
+However, most normal circumstances this will fail to run, as the gather it will try to look for environment variables.
+
+You can preface the command with these environment variables, this will allow it to continue.
+
+```bash
+$ LAGOON_PROJECT=[proejct_name] LAGOON_GIT_BRANCH=[git_branch] go run main.go gather
+```
+
+Although you will be doing a scan of your local machine, and will send this information as facts up to which ever project has been set.
+
+**Not recommend** but might be required for some testing.
+
+The recommended way to use this application is from inside a lagoon container, assuming this container does not have go installed you will need to [build](#building) the application.
+
+## Building
+
+To build the project for use inside a container you will need a statically linked binary.
+
+**MacOS**
+```bash
+$ env CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -a -o builds/lagoon-facts-macos
+```
+
+**Linux**
+```bash
+$ env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o builds/lagoon-facts-linux
+```
+
+Once built from inside a container you can use the application:
+
+```bash
+$ ./builds/lagoon-facts-linux [command]
+$ ./builds/lagoon-facts-linux gather # run the gather command
+```
+
