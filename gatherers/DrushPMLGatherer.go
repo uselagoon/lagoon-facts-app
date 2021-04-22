@@ -2,6 +2,7 @@ package gatherers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/bomoko/lagoon-facts/utils"
 	"log"
 )
@@ -39,7 +40,8 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 			Name:        key,
 			Value:       element.Version,
 			Source:      "drush_pml",
-			Description: "Module status: " + element.Status,
+			Description: "Drupal module/theme status: " + element.Status,
+			Category:  fmt.Sprintf("Drupal %s", element.Type),
 		})
 	}
 

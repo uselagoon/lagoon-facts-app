@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"github.com/bomoko/lagoon-facts/gatherers"
 	"github.com/spf13/cobra"
 	"log"
@@ -60,14 +61,9 @@ var gatherCmd = &cobra.Command{
 
 		if dryRun {
 			log.Println("---- Dry run ----")
-			for _, fact := range facts {
-				log.Printf("Would send fact: {'Name':'%s', 'Value':'%s', 'Description':'%s', 'Source':'%s', 'Environment':'%d'}",
-					fact.Name,
-					fact.Value,
-					fact.Description,
-					fact.Source,
-					fact.Environment)
-			}
+			log.Printf("Would post the follow facts to '%s:%s'", projectName, environment)
+			s, _ := json.MarshalIndent(facts, "", "\t")
+			log.Println(string(s))
 		}
 	},
 }

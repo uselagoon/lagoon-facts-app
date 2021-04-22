@@ -11,18 +11,20 @@ type HTTPHeaderOutput struct {
 	Value 	 string
 }
 
-func GetURLHeaders(url string) map[string]interface {} {
+func GetURLHeaders(url string) (map[string]interface {}, error) {
 	response, err := http.Head(url)
 
 	if err != nil {
 		response, err = http.Head("http://nginx:8080")
 		if err != nil {
-			log.Fatal("Error: Unable to fetch URL (", url, ") with error: ", err)
+			log.Println("Error: Unable to fetch URL (", url, ") with error: ", err)
+			return nil, err
 		}
 	}
 
 	if response.StatusCode != http.StatusOK {
-		log.Fatal("Error: HTTP Status = ", response.Status)
+		log.Println("Error: HTTP Status = ", response.Status)
+		return nil, err
 	}
 
 	headers := make(map[string]interface{})
@@ -31,19 +33,23 @@ func GetURLHeaders(url string) map[string]interface {} {
 		headers[strings.ToLower(k)] = v[0]
 	}
 
-	return headers
+	return headers, nil
 }
 
-func GetURLHeaderByKey(url string, key string) HTTPHeaderOutput {
-	headers := GetURLHeaders(url)
+func GetURLHeaderByKey(url string, key string) (HTTPHeaderOutput, error) {
+	headers, err := GetURLHeaders(url)
 	key = strings.ToLower(key)
+
+	if err != nil {
+		log.Printf("Error: Cannot fetch header %v", err)
+	}
 
 	if value, ok := headers[key]; ok {
 		return HTTPHeaderOutput{
 			Name:  key,
 			Value: value.(string),
-		}
+		}, nil
 	}
 
-	return HTTPHeaderOutput{}
+	return HTTPHeaderOutput{}, nil
 }

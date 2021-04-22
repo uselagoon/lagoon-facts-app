@@ -10,7 +10,7 @@ type phpGatherer struct {
 }
 
 func (p *phpGatherer) AppliesToEnvironment() bool {
-	err, stdOut, stdErr := utils.Shellout("php -r \"echo phpversion();\"")
+	err, stdOut, stdErr := utils.Shellout("php -r \"echo phpversion();\" | sed -ne 's/[^0-9]*\\(\\([0-9]\\.\\)\\{0,4\\}[0-9][^.]\\).*/\\1/p'")
 	if err != nil {
 		log.Printf("PhpVersion gatherer cannot be applied: %v", stdErr)
 		return false
@@ -28,6 +28,7 @@ func (p *phpGatherer) GatherFacts() ([]GatheredFact, error) {
 			Value: p.PhpVersion,
 			Source: "php-details",
 			Description: "This is the current running php version on the system",
+			Category: "Programming language",
 		},
 	}, nil
 }

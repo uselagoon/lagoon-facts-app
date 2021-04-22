@@ -42,12 +42,14 @@ func (p *drushGatherer) GatherFacts() ([]GatheredFact, error) {
 			Value: p.DrupalVersion,
 			Source: "drush_status",
 			Description: "Currently installed version of Drupal on the Environment",
+			Category:  "CMS",
 		},
 		{
 			Name: "drush-version",
 			Value: p.DrushVersion,
 			Source: "drush_status",
 			Description: "Currently installed version of Drush on the Environment",
+			Category:  "Application tooling",
 		},
 	}, nil
 }

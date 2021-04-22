@@ -4,11 +4,12 @@ import "log"
 
 // GatheredFact maps to the Lagoon GraphQL AddFactsInput
 type GatheredFact struct {
-	Environment int  `json:"environment"`
 	Name string `json:"name"`
 	Value string  `json:"value"`
 	Source string  `json:"source"`
+	Environment int  `json:"environment"`
 	Description string  `json:"description"`
+	Category string `json:"category,omitempty"`
 }
 
 type Gatherer interface {

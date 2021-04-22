@@ -20,10 +20,11 @@ func (p *envVarGatherer) GatherFacts() ([]GatheredFact, error) {
 	}
 	return []GatheredFact{
 		{
-			Name: "LAGOON_VERSION",
+			Name: "lagoon",
 			Value: lagoonVersion,
 			Source: "env",
-			Description: "This is the current LAGOON_VERSION running in the environment",
+			Description: "This is the current version of Lagoon",
+			Category:  "PaaS",
 		},
 	}, nil
 }
