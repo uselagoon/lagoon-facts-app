@@ -1,12 +1,18 @@
 package gatherers
 
 import (
-	"github.com/bomoko/lagoon-facts/utils"
 	"log"
 )
 
 type dockerComposeGatherer struct {
 	GatheredFacts []GatheredFact
+}
+
+type DockerComposeConfig struct {
+	Project      string                 `yaml:"x-lagoon-project,omitempty"`
+	Volumes      map[string]interface{} `yaml:"x-volumes,omitempty"`
+	Environment  map[string]interface{} `yaml:"x-environment,omitempty"`
+	Services     map[string]interface{} `yaml:"services,omitempty"`
 }
 
 type dockerComposeService struct {
@@ -20,12 +26,12 @@ type dockerComposeService struct {
 func (p *dockerComposeGatherer) AppliesToEnvironment() bool {
 	applies := false
 
-	lagoonConfigBytestream, err := LoadDockerComposeConfig("docker-compose.yml")
+	lagoonConfigBytestream, err := LoadYamlConfig("docker-compose.yml")
 	if err != nil {
-		log.Printf("Couldn't load docker-compose.yml file: ", err.Error())
+		log.Printf("Couldn't load docker-compose.yml file: %s", err.Error())
 	}
 
-	config, err := utils.UnmarshallYamlToStructure(lagoonConfigBytestream)
+	config, err := UnmarshallDockerComposeYamlToStructure(lagoonConfigBytestream)
 	if err != nil {
 		log.Fatalf("There was an issue unmarshalling the docker-compose.yml file: %s", err)
 	}
@@ -38,7 +44,7 @@ func (p *dockerComposeGatherer) AppliesToEnvironment() bool {
 
 			var service dockerComposeService
 			service.Name = k
-			service.Description = "Service found in docker-compose.yml"
+			service.Description = "Services found in docker-compose.yml"
 
 			for j, val := range serviceItems {
 				if str, ok := val.(string); ok {
@@ -53,7 +59,7 @@ func (p *dockerComposeGatherer) AppliesToEnvironment() bool {
 				Value:       service.Image,
 				Source:      "docker-compose",
 				Description: service.Description,
-				Category:    "Application services",
+				Category:    "Docker configuration",
 			})
 		}
 	}

@@ -26,7 +26,7 @@ func (p *phpGatherer) GatherFacts() ([]GatheredFact, error) {
 		{
 			Name: "php-version",
 			Value: p.PhpVersion,
-			Source: "php-details",
+			Source: "php-version",
 			Description: "This is the current running php version on the system",
 			Category: "Programming language",
 		},

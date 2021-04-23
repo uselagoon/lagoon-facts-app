@@ -18,13 +18,12 @@ type composerShowOutput struct {
 }
 
 func (p *applicationGatherer) AppliesToEnvironment() bool {
-
 	a := []string{"drupal/core", "laravel/framework"}
 
 	applies := false
 
 	for _, name := range a {
-		err, stdOut, _ := utils.Shellout(fmt.Sprintf("composer show -i --format=json %v 2> /dev/null", name))
+		err, _, stdOut := utils.Shellout(fmt.Sprintf("composer show -i --format=json %v 2> /dev/null", name))
 
 		var result composerShowOutput
 		if stdOut != "" {

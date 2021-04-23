@@ -14,7 +14,6 @@ type platformGatherer struct {
 }
 
 func (p *platformGatherer) AppliesToEnvironment() bool {
-
 	applies := false
 
 	homepage, hasLagoonRoute := os.LookupEnv("LAGOON_ROUTE")
@@ -22,16 +21,16 @@ func (p *platformGatherer) AppliesToEnvironment() bool {
 		log.Printf("LAGOON_ROUTE cannot be determined")
 	}
 
-	//find if running on Lagoon
+	// find if running on Lagoon
 	var findLagoonHttpHeader utils.HTTPHeaderOutput
 	findLagoonHttpHeader, err := utils.GetURLHeaderByKey(homepage, "x-lagoon")
 	if err != nil {
 		log.Printf("Error getting HTTP header: %s", err)
 	}
 
-	//find if running on Pantheon
-	var findPantheonHttpHeader utils.HTTPHeaderOutput
-	findPantheonHttpHeader, err = utils.GetURLHeaderByKey(homepage, "x-pantheon-styx-hostname")
+	// find if running on Pantheon
+	var findPantheonHTTPHeader utils.HTTPHeaderOutput
+	findPantheonHTTPHeader, err = utils.GetURLHeaderByKey(homepage, "x-pantheon-styx-hostname")
 	if err != nil {
 		log.Printf("Error getting HTTP header: %s", err)
 	}
@@ -39,16 +38,16 @@ func (p *platformGatherer) AppliesToEnvironment() bool {
 	if err == nil {
 		if findLagoonHttpHeader.Name != "" {
 			p.Name = "Lagoon Platform"
-			p.Category = "PaaS"
+			p.Category = "Platform"
 			p.Description = "Lagoon is the open-source web hosting platform that enables global teams to scale with ease."
 			lagoonVersion, _ := os.LookupEnv("LAGOON_VERSION")
 			p.Version = lagoonVersion
 			log.Printf("Found PaaS: '%s'", p.Name)
 			applies = true
 		}
-		if findPantheonHttpHeader.Name != "" {
+		if findPantheonHTTPHeader.Name != "" {
 			p.Name = "Pantheon"
-			p.Category = "PaaS"
+			p.Category = "Platform"
 			p.Version = "-"
 			log.Printf("Found PaaS: '%s'", p.Name)
 			applies = true

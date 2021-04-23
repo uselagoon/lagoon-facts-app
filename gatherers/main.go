@@ -5,8 +5,8 @@ import "io/ioutil"
 func init() {
 }
 
-func LoadDockerComposeConfig(dockerComposePath string) ([]byte, error) {
-	var data, err = ioutil.ReadFile(dockerComposePath)
+func LoadYamlConfig(yamlFilePath string) ([]byte, error) {
+	var data, err = ioutil.ReadFile(yamlFilePath)
 	if err != nil {
 		return []byte{}, err
 	}

@@ -7,15 +7,14 @@ import (
 )
 
 type technologyGatherer struct {
-	Name     string
-	Value  string
-	Version  string
+	Name     	string
+	Value  		string
+	Version  	string
 	Description string
-	Category string
+	Category 	string
 }
 
 func (p *technologyGatherer) AppliesToEnvironment() bool {
-
 	applies := false
 
 	homepage, hasLagoonRoute := os.LookupEnv("LAGOON_ROUTE")
@@ -33,7 +32,7 @@ func (p *technologyGatherer) AppliesToEnvironment() bool {
 		if findWebServer.Name != "" {
 			p.Name = findWebServer.Name
 			p.Description = findWebServer.Name
-			p.Category = "Web server"
+			p.Category = "Application technology"
 			p.Value = findWebServer.Value
 			log.Printf("Found web server: '%s'", p.Name)
 			applies = true
