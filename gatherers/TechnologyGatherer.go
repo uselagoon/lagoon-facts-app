@@ -11,7 +11,7 @@ type technologyGatherer struct {
 	Value  		string
 	Version  	string
 	Description string
-	Category 	string
+	Category 	FactCategory
 }
 
 func (p *technologyGatherer) AppliesToEnvironment() bool {
@@ -32,7 +32,7 @@ func (p *technologyGatherer) AppliesToEnvironment() bool {
 		if findWebServer.Name != "" {
 			p.Name = findWebServer.Name
 			p.Description = findWebServer.Name
-			p.Category = "Application technology"
+			p.Category = ApplicationTechnology
 			p.Value = findWebServer.Value
 			log.Printf("Found web server: '%s'", p.Name)
 			applies = true

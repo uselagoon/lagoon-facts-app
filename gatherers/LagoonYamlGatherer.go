@@ -47,7 +47,7 @@ func (p *lagoonYamlGatherer) AppliesToEnvironment() bool {
 				Value:       task.Command,
 				Source:      "lagoon-yml",
 				Description: fmt.Sprintf("Post deployment task for '%s' service", task.Service),
-				Category:    "Lagoon configuration",
+				Category:    Lagoon,
 			})
 		}
 	}

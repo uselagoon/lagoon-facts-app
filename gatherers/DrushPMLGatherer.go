@@ -2,7 +2,6 @@ package gatherers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/bomoko/lagoon-facts/utils"
 	"log"
 )
@@ -37,11 +36,11 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 
 	for key, element := range result {
 		p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
-			Name:        key,
-			Value:       element.Version,
-			Source:      "drush_pml",
-			Description: "Drupal module/theme status: " + element.Status,
-			Category:  fmt.Sprintf("Drupal %s", element.Type),
+			Name:         key,
+			Value:        element.Version,
+			Source:       "drush_pml",
+			Description:  "Drupal " + element.Type + " status: " + element.Status,
+			Category:     Drupal,
 		})
 	}
 

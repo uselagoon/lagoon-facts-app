@@ -24,7 +24,7 @@ func (p *envVarGatherer) GatherFacts() ([]GatheredFact, error) {
 			Value: lagoonVersion,
 			Source: "env",
 			Description: "This is the current version of Lagoon",
-			Category:  "Environment variable",
+			Category:  EnvVar,
 		},
 	}, nil
 }

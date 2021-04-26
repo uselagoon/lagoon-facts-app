@@ -13,7 +13,7 @@ type GatheredFact struct {
 	Source string  `json:"source"`
 	Environment int  `json:"environment"`
 	Description string  `json:"description"`
-	Category string `json:"category,omitempty"`
+	Category FactCategory `json:"category,omitempty"`
 }
 
 type Gatherer interface {

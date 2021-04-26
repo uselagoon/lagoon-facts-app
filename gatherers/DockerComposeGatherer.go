@@ -59,7 +59,7 @@ func (p *dockerComposeGatherer) AppliesToEnvironment() bool {
 				Value:       service.Image,
 				Source:      "docker-compose",
 				Description: service.Description,
-				Category:    "Docker configuration",
+				Category:    Docker,
 			})
 		}
 	}

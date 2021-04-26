@@ -9,7 +9,7 @@ import (
 type platformGatherer struct {
 	Name     string
 	Version  string
-	Category string
+	Category FactCategory
 	Description string
 }
 
@@ -38,7 +38,7 @@ func (p *platformGatherer) AppliesToEnvironment() bool {
 	if err == nil {
 		if findLagoonHttpHeader.Name != "" {
 			p.Name = "Lagoon Platform"
-			p.Category = "Platform"
+			p.Category = Platform
 			p.Description = "Lagoon is the open-source web hosting platform that enables global teams to scale with ease."
 			lagoonVersion, _ := os.LookupEnv("LAGOON_VERSION")
 			p.Version = lagoonVersion
@@ -47,7 +47,7 @@ func (p *platformGatherer) AppliesToEnvironment() bool {
 		}
 		if findPantheonHTTPHeader.Name != "" {
 			p.Name = "Pantheon"
-			p.Category = "Platform"
+			p.Category = Platform
 			p.Version = "-"
 			log.Printf("Found PaaS: '%s'", p.Name)
 			applies = true

@@ -41,7 +41,7 @@ func (p *applicationGatherer) AppliesToEnvironment() bool {
 				Value:       result.Versions[0],
 				Source:      "application_via_composer",
 				Description: result.Description,
-				Category:  "Application",
+				Category:  Application,
 			})
 		}
 
