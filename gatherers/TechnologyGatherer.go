@@ -14,6 +14,10 @@ type technologyGatherer struct {
 	Category 	FactCategory
 }
 
+func (p *technologyGatherer) GetGathererCmdType() string {
+	return Dynamic
+}
+
 func (p *technologyGatherer) AppliesToEnvironment() bool {
 	applies := false
 

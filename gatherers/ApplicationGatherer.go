@@ -11,6 +11,10 @@ type applicationGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *applicationGatherer) GetGathererCmdType() string {
+	return Static
+}
+
 type composerShowOutput struct {
 	Name string `json:"name,omitempty"`
 	Versions []string `json:"versions,omitempty"`

@@ -8,9 +8,10 @@ import (
 	"os"
 )
 
-var dryRun bool
 var projectName string
 var environment string
+var gatherer bool
+var dryRun bool
 
 // gatherCmd represents the gather command
 var gatherCmd = &cobra.Command{
@@ -35,13 +36,26 @@ var gatherCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		if argStatic && argDynamic {
+			log.Fatalf("Cannot use both 'static' and 'dynamic' only gatherers - exiting")
+			os.Exit(1)
+		}
+
+		gathererTypeArg := ""
+		if argStatic {
+			gathererTypeArg = "static"
+		}
+		if argDynamic {
+			gathererTypeArg = "dynamic"
+		}
+
 		//run the gatherers...
 		gathererSlice := gatherers.GetGatherers()
 
 		var facts []gatherers.GatheredFact
 
 		for _, e := range gathererSlice {
-			if e.AppliesToEnvironment() {
+			if (e.GetGathererCmdType() == gathererTypeArg || gathererTypeArg == "") && e.AppliesToEnvironment() {
 				gatheredFacts, err := e.GatherFacts()
 				if err != nil {
 					log.Println(err.Error())
@@ -69,6 +83,8 @@ var gatherCmd = &cobra.Command{
 }
 
 func init() {
+	gatherCmd.PersistentFlags().StringVarP(&projectName, "project-name", "p", "", "The Lagoon project name")
+	gatherCmd.PersistentFlags().StringVarP(&environment, "environment-name", "e", "", "The Lagoon environment name")
 	gatherCmd.Flags().BoolVarP(&dryRun, "dry-run", "d", false, "run gathers and print to screen without running write methods")
 	rootCmd.AddCommand(gatherCmd)
 }

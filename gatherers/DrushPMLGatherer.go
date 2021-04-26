@@ -10,6 +10,10 @@ type drushPmlGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *drushPmlGatherer) GetGathererCmdType() string {
+	return Static
+}
+
 type drushPmlEntry struct {
 	Package string
 	Name string

@@ -8,6 +8,10 @@ type dockerComposeGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *dockerComposeGatherer) GetGathererCmdType() string {
+	return Static
+}
+
 type DockerComposeConfig struct {
 	Project      string                 `yaml:"x-lagoon-project,omitempty"`
 	Volumes      map[string]interface{} `yaml:"x-volumes,omitempty"`
