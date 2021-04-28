@@ -10,7 +10,7 @@ type lagoonYamlGatherer struct {
 }
 
 func (p *lagoonYamlGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 type LagoonYamlConfig struct {

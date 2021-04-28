@@ -12,7 +12,7 @@ type applicationGatherer struct {
 }
 
 func (p *applicationGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 type composerShowOutput struct {

@@ -10,7 +10,7 @@ type phpGatherer struct {
 }
 
 func (p *phpGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 func (p *phpGatherer) AppliesToEnvironment() bool {

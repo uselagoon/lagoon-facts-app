@@ -41,12 +41,10 @@ var gatherCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		gathererTypeArg := ""
-		if argStatic {
-			gathererTypeArg = "static"
-		}
+		//set gatherer type to be static by default
+		gathererTypeArg := gatherers.GATHERER_TYPE_STATIC
 		if argDynamic {
-			gathererTypeArg = "dynamic"
+			gathererTypeArg = gatherers.GATHERER_TYPE_DYNAMIC
 		}
 
 		//run the gatherers...
@@ -55,13 +53,15 @@ var gatherCmd = &cobra.Command{
 		var facts []gatherers.GatheredFact
 
 		for _, e := range gathererSlice {
-			if (e.GetGathererCmdType() == gathererTypeArg || gathererTypeArg == "") && e.AppliesToEnvironment() {
-				gatheredFacts, err := e.GatherFacts()
-				if err != nil {
-					log.Println(err.Error())
-					continue
+			if e.GetGathererCmdType() == gathererTypeArg {
+				if e.AppliesToEnvironment() {
+					gatheredFacts, err := e.GatherFacts()
+					if err != nil {
+						log.Println(err.Error())
+						continue
+					}
+					facts = append(facts, gatheredFacts...)
 				}
-				facts = append(facts, gatheredFacts...)
 			}
 		}
 
@@ -74,10 +74,12 @@ var gatherCmd = &cobra.Command{
 		}
 
 		if dryRun {
-			log.Println("---- Dry run ----")
-			log.Printf("Would post the follow facts to '%s:%s'", projectName, environment)
-			s, _ := json.MarshalIndent(facts, "", "\t")
-			log.Println(string(s))
+			if facts != nil {
+				log.Println("---- Dry run ----")
+				log.Printf("Would post the follow facts to '%s:%s'", projectName, environment)
+				s, _ := json.MarshalIndent(facts, "", "\t")
+				log.Println(string(s))
+			}
 		}
 	},
 }

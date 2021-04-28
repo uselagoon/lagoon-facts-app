@@ -13,7 +13,7 @@ type drushGatherer struct {
 }
 
 func (p *drushGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 func (p *drushGatherer) AppliesToEnvironment() bool {

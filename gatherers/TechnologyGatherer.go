@@ -15,7 +15,7 @@ type technologyGatherer struct {
 }
 
 func (p *technologyGatherer) GetGathererCmdType() string {
-	return Dynamic
+	return GATHERER_TYPE_DYNAMIC
 }
 
 func (p *technologyGatherer) AppliesToEnvironment() bool {

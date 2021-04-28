@@ -17,8 +17,8 @@ type GatheredFact struct {
 }
 
 const (
-	Static string = "static"
-	Dynamic string = "dynamic"
+	GATHERER_TYPE_STATIC  string = "static"
+	GATHERER_TYPE_DYNAMIC string = "dynamic"
 )
 
 type Gatherer interface {

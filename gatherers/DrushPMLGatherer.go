@@ -11,7 +11,7 @@ type drushPmlGatherer struct {
 }
 
 func (p *drushPmlGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 type drushPmlEntry struct {

@@ -9,7 +9,7 @@ type dockerComposeGatherer struct {
 }
 
 func (p *dockerComposeGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 type DockerComposeConfig struct {

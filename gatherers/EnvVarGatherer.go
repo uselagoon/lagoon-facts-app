@@ -9,7 +9,7 @@ type envVarGatherer struct {
 }
 
 func (p *envVarGatherer) GetGathererCmdType() string {
-	return Static
+	return GATHERER_TYPE_STATIC
 }
 
 func (p *envVarGatherer) AppliesToEnvironment() bool {
