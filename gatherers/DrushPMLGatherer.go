@@ -10,6 +10,10 @@ type drushPmlGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *drushPmlGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_STATIC
+}
+
 type drushPmlEntry struct {
 	Package string
 	Name string
@@ -36,10 +40,11 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 
 	for key, element := range result {
 		p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
-			Name:        key,
-			Value:       element.Version,
-			Source:      "drush_pml",
-			Description: "Module status: " + element.Status,
+			Name:         key,
+			Value:        element.Version,
+			Source:       "drush_pml",
+			Description:  "Drupal " + element.Type + " status: " + element.Status,
+			Category:     Drupal,
 		})
 	}
 

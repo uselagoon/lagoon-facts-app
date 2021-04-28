@@ -1,17 +1,26 @@
 package gatherers
 
-import "log"
+import (
+	"log"
+)
 
 // GatheredFact maps to the Lagoon GraphQL AddFactsInput
 type GatheredFact struct {
-	Environment int  `json:"environment"`
 	Name string `json:"name"`
 	Value string  `json:"value"`
 	Source string  `json:"source"`
+	Environment int  `json:"environment"`
 	Description string  `json:"description"`
+	Category FactCategory `json:"category,omitempty"`
 }
 
+const (
+	GATHERER_TYPE_STATIC  string = "static"
+	GATHERER_TYPE_DYNAMIC string = "dynamic"
+)
+
 type Gatherer interface {
+	GetGathererCmdType() string
 	AppliesToEnvironment() bool //Whether this gatherer can run in the local environment
 	GatherFacts() ([]GatheredFact, error)
 }

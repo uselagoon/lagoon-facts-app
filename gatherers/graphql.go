@@ -2,6 +2,7 @@ package gatherers
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/bomoko/lagoon-facts/utils"
@@ -10,6 +11,7 @@ import (
 )
 
 const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
+const lagoonUIEndpoint = "https://dashboard.amazeeio.cloud"
 
 func Writefacts(projectName string, environmentName string, facts []GatheredFact) error {
 
@@ -65,13 +67,16 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 	}
 	factInput.Facts = facts
 
-	req.Var("facts",factInput)
+	req.Var("facts", factInput)
 
 	ctx := context.Background()
 
 	if err := client.Run(ctx, req, &addFactMutation); err != nil {
 		log.Fatal(err)
 	}
+
+	var factsUIUrl = fmt.Sprintf("%s/projects/%s/%s/facts", lagoonUIEndpoint, projectName, fmt.Sprintf("%s-%s", projectName, environmentName))
+	log.Printf("Successfully added facts to %s:%s \n %s", projectName, environmentName, factsUIUrl)
 
 	return nil
 }

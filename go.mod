@@ -13,4 +13,5 @@ require (
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
 	golang.org/x/text v0.3.3
 	google.golang.org/appengine v1.6.7 // indirect
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

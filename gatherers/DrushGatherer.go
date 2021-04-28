@@ -12,8 +12,8 @@ type drushGatherer struct {
 	DrushVersion string
 }
 
-type drushStatusJson struct {
-
+func (p *drushGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_STATIC
 }
 
 func (p *drushGatherer) AppliesToEnvironment() bool {
@@ -42,16 +42,18 @@ func (p *drushGatherer) GatherFacts() ([]GatheredFact, error) {
 			Value: p.DrupalVersion,
 			Source: "drush_status",
 			Description: "Currently installed version of Drupal on the Environment",
+			Category:  Drupal,
 		},
 		{
 			Name: "drush-version",
 			Value: p.DrushVersion,
 			Source: "drush_status",
 			Description: "Currently installed version of Drush on the Environment",
+			Category:  Drupal,
 		},
 	}, nil
 }
 
 func init()  {
-	RegisterGatherer("Drush Gatherer", &drushGatherer{})
+	RegisterGatherer("Drush gatherer", &drushGatherer{})
 }
