@@ -1,8 +1,6 @@
 package gatherers
 
 import (
-	"errors"
-	"gopkg.in/yaml.v2"
 	"log"
 )
 
@@ -36,24 +34,4 @@ func RegisterGatherer(name string, gatherer Gatherer) {
 
 func GetGatherers() []Gatherer {
 	return gathererInternalMap
-}
-
-func UnmarshallDockerComposeYamlToStructure(data []byte) (DockerComposeConfig, error) {
-	config := DockerComposeConfig{}
-	err := yaml.Unmarshal(data, &config)
-
-	if err != nil {
-		return DockerComposeConfig{}, errors.New("Unable to parse docker-compose.yml config")
-	}
-	return config, nil
-}
-
-func UnmarshallLagoonYamlToStructure(data []byte) (LagoonYamlConfig, error) {
-	config := LagoonYamlConfig{}
-	err := yaml.Unmarshal(data, &config)
-
-	if err != nil {
-		return LagoonYamlConfig{}, errors.New("Unable to parse lagoon.yml config")
-	}
-	return config, nil
 }

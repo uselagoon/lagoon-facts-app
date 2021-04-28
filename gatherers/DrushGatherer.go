@@ -55,5 +55,5 @@ func (p *drushGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init()  {
-	RegisterGatherer("Drush Gatherer", &drushGatherer{})
+	RegisterGatherer("Drush gatherer", &drushGatherer{})
 }

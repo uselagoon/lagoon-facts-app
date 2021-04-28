@@ -74,5 +74,5 @@ func (p *platformGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init() {
-	RegisterGatherer("PaaS data gatherer", &platformGatherer{})
+	RegisterGatherer("PaaS gatherer", &platformGatherer{})
 }

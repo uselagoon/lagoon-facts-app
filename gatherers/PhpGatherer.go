@@ -38,5 +38,5 @@ func (p *phpGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init()  {
-	RegisterGatherer("Php Version Gatherer", &phpGatherer{})
+	RegisterGatherer("Php gatherer", &phpGatherer{})
 }
