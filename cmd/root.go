@@ -25,6 +25,8 @@ import (
 )
 
 var cfgFile string
+var argStatic bool
+var argDynamic bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -51,6 +53,10 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.lagoon-facts.yaml)")
+	rootCmd.PersistentFlags().BoolVar(&argStatic, "static", false, "Run only static gatherers")
+	viper.BindPFlag("static", rootCmd.PersistentFlags().Lookup("static"))
+	rootCmd.PersistentFlags().BoolVar(&argDynamic, "dynamic", false, "Run only dynamic gatherers")
+	viper.BindPFlag("dynamic", rootCmd.PersistentFlags().Lookup("dynamic"))
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

@@ -12,8 +12,8 @@ type drushGatherer struct {
 	DrushVersion string
 }
 
-type drushStatusJson struct {
-
+func (p *drushGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_STATIC
 }
 
 func (p *drushGatherer) AppliesToEnvironment() bool {

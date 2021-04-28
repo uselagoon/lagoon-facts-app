@@ -9,6 +9,10 @@ type lagoonYamlGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *lagoonYamlGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_STATIC
+}
+
 type LagoonYamlConfig struct {
 	Tasks        map[string]postRollout `yaml:"tasks,omitempty"`
 	Routes       map[string]interface{} `yaml:"routes,omitempty"`

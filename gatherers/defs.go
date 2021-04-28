@@ -16,7 +16,13 @@ type GatheredFact struct {
 	Category FactCategory `json:"category,omitempty"`
 }
 
+const (
+	GATHERER_TYPE_STATIC  string = "static"
+	GATHERER_TYPE_DYNAMIC string = "dynamic"
+)
+
 type Gatherer interface {
+	GetGathererCmdType() string
 	AppliesToEnvironment() bool //Whether this gatherer can run in the local environment
 	GatherFacts() ([]GatheredFact, error)
 }

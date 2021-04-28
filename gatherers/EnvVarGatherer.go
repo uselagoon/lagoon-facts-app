@@ -8,6 +8,10 @@ type envVarGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
+func (p *envVarGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_STATIC
+}
+
 func (p *envVarGatherer) AppliesToEnvironment() bool {
 
 	return true

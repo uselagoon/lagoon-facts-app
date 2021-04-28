@@ -13,6 +13,10 @@ type platformGatherer struct {
 	Description string
 }
 
+func (p *platformGatherer) GetGathererCmdType() string {
+	return GATHERER_TYPE_DYNAMIC
+}
+
 func (p *platformGatherer) AppliesToEnvironment() bool {
 	applies := false
 
