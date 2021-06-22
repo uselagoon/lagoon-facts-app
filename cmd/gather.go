@@ -18,8 +18,7 @@ var gatherCmd = &cobra.Command{
 	Use:   "gather",
 	Short: "Running this command will invoke the registered gatherers",
 	Long:  `Running all the registered gatherers will inspect the system and write FACT data back to the Lagoon insights system`,
-	Run: func(cmd *cobra.Command, args []string) {
-
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		//get the basic env vars
 		if projectName == "" {
 			projectName = os.Getenv("LAGOON_PROJECT")
@@ -40,7 +39,8 @@ var gatherCmd = &cobra.Command{
 			log.Fatalf("Cannot use both 'static' and 'dynamic' only gatherers - exiting")
 			os.Exit(1)
 		}
-
+	},
+	Run: func(cmd *cobra.Command, args []string) {
 		//set gatherer type to be static by default
 		gathererTypeArg := gatherers.GATHERER_TYPE_STATIC
 		if argDynamic {
@@ -84,9 +84,11 @@ var gatherCmd = &cobra.Command{
 	},
 }
 
+var GatherCommand = gatherCmd
+
 func init() {
 	gatherCmd.PersistentFlags().StringVarP(&projectName, "project-name", "p", "", "The Lagoon project name")
 	gatherCmd.PersistentFlags().StringVarP(&environment, "environment-name", "e", "", "The Lagoon environment name")
-	gatherCmd.Flags().BoolVarP(&dryRun, "dry-run", "d", false, "run gathers and print to screen without running write methods")
+	gatherCmd.PersistentFlags().BoolVarP(&dryRun, "dry-run", "d", false, "run gathers and print to screen without running write methods")
 	rootCmd.AddCommand(gatherCmd)
 }
