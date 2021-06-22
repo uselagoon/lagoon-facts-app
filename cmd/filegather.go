@@ -23,7 +23,7 @@ var filegatherCmd = &cobra.Command{
 
 
 		//we can just unmarshall the file data into the facts ...
-		if gatheredFileName == "" || gatheredFileName == "" {
+		if gatheredFileName == "" {
 			fmt.Errorf("Filename should be passed as argument")
 			os.Exit(1)
 		}
