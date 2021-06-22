@@ -11,7 +11,7 @@ type GatheredFact struct {
 	Source string  `json:"source"`
 	Environment int  `json:"environment"`
 	Description string  `json:"description"`
-	Category FactCategory `json:"category,omitempty"`
+	Category FactCategory `json:"-"` //`json:"category,omitempty"`
 }
 
 const (
