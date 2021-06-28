@@ -13,7 +13,7 @@ import (
 const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
 const lagoonUIEndpoint = "https://dashboard.amazeeio.cloud"
 
-func Writefacts(projectName string, environmentName string, facts []GatheredFact) error {
+func Writefacts(lagoonApiEndpoint string, projectName string, environmentName string, facts []GatheredFact) error {
 
 	projectId, err := GetProjectId(projectName)
 	if err != nil {

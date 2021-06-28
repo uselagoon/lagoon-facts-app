@@ -19,6 +19,7 @@ var gatherCmd = &cobra.Command{
 	Short: "Running this command will invoke the registered gatherers",
 	Long:  `Running all the registered gatherers will inspect the system and write FACT data back to the Lagoon insights system`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		
 		//get the basic env vars
 		if projectName == "" {
 			projectName = os.Getenv("LAGOON_PROJECT")
@@ -66,7 +67,7 @@ var gatherCmd = &cobra.Command{
 		}
 
 		if !dryRun {
-			err := gatherers.Writefacts(projectName, environment, facts)
+			err := gatherers.Writefacts(LagoonApiEndpoint, projectName, environment, facts)
 
 			if err != nil {
 				log.Println(err.Error())

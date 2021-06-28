@@ -32,7 +32,7 @@ var filegatherCmd = &cobra.Command{
 		_ = json.Unmarshal([]byte(file), &facts)
 
 		if !dryRun {
-			err := gatherers.Writefacts(projectName, environment, facts)
+			err := gatherers.Writefacts(LagoonApiEndpoint, projectName, environment, facts)
 			if err != nil {
 				log.Println(err.Error())
 			}

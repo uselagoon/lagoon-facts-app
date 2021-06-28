@@ -27,6 +27,7 @@ import (
 var cfgFile string
 var argStatic bool
 var argDynamic bool
+var LagoonApiEndpoint string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -56,6 +57,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&argStatic, "static", false, "Run only static gatherers")
 	viper.BindPFlag("static", rootCmd.PersistentFlags().Lookup("static"))
 	rootCmd.PersistentFlags().BoolVar(&argDynamic, "dynamic", false, "Run only dynamic gatherers")
+	rootCmd.PersistentFlags().StringVar(&LagoonApiEndpoint, "lagoon-api-endpoint", "https://api.lagoon.amazeeio.cloud/graphql", "The Lagoon API endpoint")
 	viper.BindPFlag("dynamic", rootCmd.PersistentFlags().Lookup("dynamic"))
 
 	// Cobra also supports local flags, which will only run
