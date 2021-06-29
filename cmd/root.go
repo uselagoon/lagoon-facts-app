@@ -57,7 +57,13 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&argStatic, "static", false, "Run only static gatherers")
 	viper.BindPFlag("static", rootCmd.PersistentFlags().Lookup("static"))
 	rootCmd.PersistentFlags().BoolVar(&argDynamic, "dynamic", false, "Run only dynamic gatherers")
-	rootCmd.PersistentFlags().StringVar(&LagoonApiEndpoint, "lagoon-api-endpoint", "https://api.lagoon.amazeeio.cloud/graphql", "The Lagoon API endpoint")
+
+	var defaultLagoonApiEnvAndFallback = "https://api.lagoon.amazeeio.cloud/graphql"
+	if envApi, varset := os.LookupEnv("LAGOON_API_ENDPOINT"); varset == true {
+		defaultLagoonApiEnvAndFallback = envApi
+	}
+
+	rootCmd.PersistentFlags().StringVar(&LagoonApiEndpoint, "lagoon-api-endpoint", defaultLagoonApiEnvAndFallback, "The Lagoon API endpoint")
 	viper.BindPFlag("dynamic", rootCmd.PersistentFlags().Lookup("dynamic"))
 
 	// Cobra also supports local flags, which will only run
