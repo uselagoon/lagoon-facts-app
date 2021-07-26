@@ -2,6 +2,7 @@ package gatherers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/bomoko/lagoon-facts/utils"
 	"log"
 )
@@ -19,7 +20,7 @@ type drushPmlEntry struct {
 	Name string
 	Type string
 	Status string
-	Version string
+	Version interface{}
 }
 
 
@@ -41,7 +42,7 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 	for key, element := range result {
 		p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
 			Name:         key,
-			Value:        element.Version,
+			Value:        fmt.Sprintf("%v", element.Version),
 			Source:       "drush_pml",
 			Description:  "Drupal " + element.Type + " status: " + element.Status,
 			Category:     Drupal,
