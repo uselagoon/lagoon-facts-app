@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/bomoko/lagoon-facts/utils"
+	"github.com/uselagoon/lagoon-facts-app/utils"
 	"github.com/machinebox/graphql"
 	"golang.org/x/oauth2"
 )
