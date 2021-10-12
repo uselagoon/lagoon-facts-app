@@ -17,8 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -27,6 +28,7 @@ import (
 var cfgFile string
 var argStatic bool
 var argDynamic bool
+var verbose bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -57,6 +59,8 @@ func init() {
 	viper.BindPFlag("static", rootCmd.PersistentFlags().Lookup("static"))
 	rootCmd.PersistentFlags().BoolVar(&argDynamic, "dynamic", false, "Run only dynamic gatherers")
 	viper.BindPFlag("dynamic", rootCmd.PersistentFlags().Lookup("dynamic"))
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Run in verbose")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

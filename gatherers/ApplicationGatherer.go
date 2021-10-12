@@ -3,8 +3,9 @@ package gatherers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/uselagoon/lagoon-facts-app/utils"
 	"log"
+
+	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
 type applicationGatherer struct {
@@ -16,9 +17,9 @@ func (p *applicationGatherer) GetGathererCmdType() string {
 }
 
 type composerShowOutput struct {
-	Name string `json:"name,omitempty"`
-	Versions []string `json:"versions,omitempty"`
-	Description string `json:"description,omitempty"`
+	Name        string   `json:"name,omitempty"`
+	Versions    []string `json:"versions,omitempty"`
+	Description string   `json:"description,omitempty"`
 }
 
 func (p *applicationGatherer) AppliesToEnvironment() bool {
@@ -45,7 +46,7 @@ func (p *applicationGatherer) AppliesToEnvironment() bool {
 				Value:       result.Versions[0],
 				Source:      "application_via_composer",
 				Description: result.Description,
-				Category:  Application,
+				Category:    Application,
 			})
 		}
 

@@ -2,14 +2,17 @@ package cmd
 
 import (
 	"encoding/json"
-	"github.com/spf13/cobra"
-	"github.com/uselagoon/lagoon-facts-app/gatherers"
 	"log"
 	"os"
+	"strings"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/uselagoon/lagoon-facts-app/gatherers"
 )
 
 var projectName string
-var environment string
+var environmentName string
 var gatherer bool
 var dryRun bool
 
@@ -21,16 +24,22 @@ var gatherCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		//get the basic env vars
 		if projectName == "" {
-			projectName = os.Getenv("LAGOON_PROJECT")
+			project, exists := os.LookupEnv("LAGOON_PROJECT")
+			if exists {
+				projectName = strings.Replace(project, "_", "-", -1)
+			}
 		}
 		if projectName == "" {
-			projectName = os.Getenv("LAGOON_SAFE_PROJECT")
+			project, exists := os.LookupEnv("LAGOON_SAFE_PROJECT")
+			if exists {
+				projectName = strings.Replace(project, "_", "-", -1)
+			}
 		}
-		if environment == "" {
-			environment = os.Getenv("LAGOON_GIT_BRANCH")
+		if environmentName == "" {
+			environmentName = os.Getenv("LAGOON_GIT_BRANCH")
 		}
 
-		if environment == "" || projectName == "" {
+		if environmentName == "" || projectName == "" {
 			log.Fatalf("PROJECT OR ENVIRONMENT NOT SET - exiting")
 			os.Exit(1)
 		}
@@ -60,13 +69,20 @@ var gatherCmd = &cobra.Command{
 						log.Println(err.Error())
 						continue
 					}
-					facts = append(facts, gatheredFacts...)
+					if verbose := viper.Get("verbose"); verbose == true {
+						for _, f := range gatheredFacts {
+							if f.Value != "" {
+								log.Printf("Registering %s", f.Name)
+								facts = append(facts, gatheredFacts...)
+							}
+						}
+					}
 				}
 			}
 		}
 
 		if !dryRun {
-			err := gatherers.Writefacts(projectName, environment, facts)
+			err := gatherers.Writefacts(projectName, environmentName, facts)
 
 			if err != nil {
 				log.Println(err.Error())
@@ -76,7 +92,7 @@ var gatherCmd = &cobra.Command{
 		if dryRun {
 			if facts != nil {
 				log.Println("---- Dry run ----")
-				log.Printf("Would post the follow facts to '%s:%s'", projectName, environment)
+				log.Printf("Would post the follow facts to '%s:%s'", projectName, environmentName)
 				s, _ := json.MarshalIndent(facts, "", "\t")
 				log.Println(string(s))
 			}
@@ -87,8 +103,8 @@ var gatherCmd = &cobra.Command{
 var GatherCommand = gatherCmd
 
 func init() {
-	gatherCmd.PersistentFlags().StringVarP(&projectName, "project-name", "p", "", "The Lagoon project name")
-	gatherCmd.PersistentFlags().StringVarP(&environment, "environment-name", "e", "", "The Lagoon environment name")
+	gatherCmd.PersistentFlags().StringVarP(&projectName, "project", "p", "", "The Lagoon project name")
+	gatherCmd.PersistentFlags().StringVarP(&environmentName, "environment", "e", "", "The Lagoon environment name")
 	gatherCmd.PersistentFlags().BoolVarP(&dryRun, "dry-run", "d", false, "run gathers and print to screen without running write methods")
 	rootCmd.AddCommand(gatherCmd)
 }

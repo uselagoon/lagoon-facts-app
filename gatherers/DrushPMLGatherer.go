@@ -3,8 +3,9 @@ package gatherers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/uselagoon/lagoon-facts-app/utils"
 	"log"
+
+	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
 type drushPmlGatherer struct {
@@ -17,18 +18,17 @@ func (p *drushPmlGatherer) GetGathererCmdType() string {
 
 type drushPmlEntry struct {
 	Package string
-	Name string
-	Type string
-	Status string
+	Name    string
+	Type    string
+	Status  string
 	Version interface{}
 }
-
 
 func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 
 	err, stdOut, stdErr := utils.Shellout("drush pml --format=json 2> /dev/null")
 	if err != nil {
-		log.Printf("Drush gatherer cannot be applied: %v", stdErr)
+		log.Printf("Drush pml gatherer cannot be applied: %v", stdErr)
 		return false
 	}
 
@@ -41,11 +41,11 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 
 	for key, element := range result {
 		p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
-			Name:         key,
-			Value:        fmt.Sprintf("%v", element.Version),
-			Source:       "drush_pml",
-			Description:  "Drupal " + element.Type + " status: " + element.Status,
-			Category:     Drupal,
+			Name:        key,
+			Value:       fmt.Sprintf("%v", element.Version),
+			Source:      "drush_pml",
+			Description: "Drupal " + element.Type + " status: " + element.Status,
+			Category:    Drupal,
 		})
 	}
 
@@ -56,6 +56,6 @@ func (p *drushPmlGatherer) GatherFacts() ([]GatheredFact, error) {
 	return p.GatheredFacts, nil
 }
 
-func init()  {
+func init() {
 	RegisterGatherer("Drupal Module List Gatherer", &drushPmlGatherer{})
 }

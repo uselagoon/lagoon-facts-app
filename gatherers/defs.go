@@ -1,17 +1,13 @@
 package gatherers
 
-import (
-	"log"
-)
-
 // GatheredFact maps to the Lagoon GraphQL AddFactsInput
 type GatheredFact struct {
-	Name string `json:"name"`
-	Value string  `json:"value"`
-	Source string  `json:"source"`
-	Environment int  `json:"environment"`
-	Description string  `json:"description"`
-	Category FactCategory `json:"-"` //`json:"category,omitempty"`
+	Name        string       `json:"name"`
+	Value       string       `json:"value"`
+	Source      string       `json:"source"`
+	Environment int          `json:"environment"`
+	Description string       `json:"description"`
+	Category    FactCategory `json:"-"` //`json:"category,omitempty"`
 }
 
 const (
@@ -28,7 +24,6 @@ type Gatherer interface {
 var gathererInternalMap []Gatherer
 
 func RegisterGatherer(name string, gatherer Gatherer) {
-	log.Print("registering: " + name)
 	gathererInternalMap = append(gathererInternalMap, gatherer)
 }
 

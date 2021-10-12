@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+
 	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
 type drushGatherer struct {
 	DrupalVersion string
-	DrushVersion string
+	DrushVersion  string
 }
 
 func (p *drushGatherer) GetGathererCmdType() string {
@@ -19,7 +20,7 @@ func (p *drushGatherer) GetGathererCmdType() string {
 func (p *drushGatherer) AppliesToEnvironment() bool {
 	err, stdOut, stdErr := utils.Shellout("drush status --format=json 2> /dev/null")
 	if err != nil {
-		log.Printf("Drush gatherer cannot be applied: %v", stdErr)
+		log.Printf("Drush status gatherer cannot be applied: %v", stdErr)
 		return false
 	}
 
@@ -38,22 +39,22 @@ func (p *drushGatherer) AppliesToEnvironment() bool {
 func (p *drushGatherer) GatherFacts() ([]GatheredFact, error) {
 	return []GatheredFact{
 		{
-			Name: "drupal-version",
-			Value: p.DrupalVersion,
-			Source: "drush_status",
+			Name:        "drupal-version",
+			Value:       p.DrupalVersion,
+			Source:      "drush_status",
 			Description: "Currently installed version of Drupal on the Environment",
-			Category:  Drupal,
+			Category:    Drupal,
 		},
 		{
-			Name: "drush-version",
-			Value: p.DrushVersion,
-			Source: "drush_status",
+			Name:        "drush-version",
+			Value:       p.DrushVersion,
+			Source:      "drush_status",
 			Description: "Currently installed version of Drush on the Environment",
-			Category:  Drupal,
+			Category:    Drupal,
 		},
 	}, nil
 }
 
-func init()  {
+func init() {
 	RegisterGatherer("Drush gatherer", &drushGatherer{})
 }
