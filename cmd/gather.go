@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"encoding/json"
-	"github.com/bomoko/lagoon-facts/gatherers"
 	"github.com/spf13/cobra"
+	"github.com/uselagoon/lagoon-facts-app/gatherers"
 	"log"
 	"os"
 )

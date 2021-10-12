@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/bomoko/lagoon-facts/cmd"
+import "github.com/uselagoon/lagoon-facts-app/cmd"
 
 func main() {
 	cmd.Execute()

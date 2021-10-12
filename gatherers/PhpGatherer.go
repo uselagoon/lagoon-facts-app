@@ -2,7 +2,7 @@ package gatherers
 
 import (
 	"log"
-	"github.com/bomoko/lagoon-facts/utils"
+	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
 type phpGatherer struct {

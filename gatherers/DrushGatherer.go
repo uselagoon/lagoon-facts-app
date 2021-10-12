@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"github.com/bomoko/lagoon-facts/utils"
+	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
 type drushGatherer struct {

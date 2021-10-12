@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bomoko/lagoon-facts/gatherers"
+	"github.com/uselagoon/lagoon-facts-app/gatherers"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"log"
