@@ -40,13 +40,15 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 	}
 
 	for key, element := range result {
-		p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
-			Name:        key,
-			Value:       fmt.Sprintf("%v", element.Version),
-			Source:      "drush_pml",
-			Description: "Drupal " + element.Type + " status: " + element.Status,
-			Category:    Drupal,
-		})
+		if element.Version != nil {
+			p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
+				Name:        key,
+				Value:       fmt.Sprintf("%v", element.Version),
+				Source:      "drush_pml",
+				Description: "Status: " + element.Status,
+				Category:    Drupal,
+			})
+		}
 	}
 
 	return true

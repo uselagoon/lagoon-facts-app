@@ -69,14 +69,12 @@ var gatherCmd = &cobra.Command{
 						log.Println(err.Error())
 						continue
 					}
-					if verbose := viper.Get("verbose"); verbose == true {
-						for _, f := range gatheredFacts {
-							if f.Value != "" {
-								log.Printf("Registering %s", f.Name)
-								facts = append(facts, gatheredFacts...)
-							}
+					for _, f := range gatheredFacts {
+						if verbose := viper.Get("verbose"); verbose == true {
+							log.Printf("Registering %s", f.Name)
 						}
 					}
+					facts = append(facts, gatheredFacts...)
 				}
 			}
 		}

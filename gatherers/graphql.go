@@ -46,8 +46,10 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 
 	client, err := getGraphqlClient()
 	if err != nil {
+		log.Println(err)
 		return err
 	}
+
 	var addFactMutation struct {
 		AddFacts []struct {
 			Id int

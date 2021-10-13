@@ -7,7 +7,7 @@ type GatheredFact struct {
 	Source      string       `json:"source"`
 	Environment int          `json:"environment"`
 	Description string       `json:"description"`
-	Category    FactCategory `json:"-"` //`json:"category,omitempty"`
+	Category    FactCategory `json:"-"` // `json:"category,omitempty"`
 }
 
 const (
@@ -17,7 +17,7 @@ const (
 
 type Gatherer interface {
 	GetGathererCmdType() string
-	AppliesToEnvironment() bool //Whether this gatherer can run in the local environment
+	AppliesToEnvironment() bool // Whether this gatherer can run in the local environment
 	GatherFacts() ([]GatheredFact, error)
 }
 
