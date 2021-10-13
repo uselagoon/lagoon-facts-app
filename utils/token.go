@@ -3,11 +3,12 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/agent"
 	"net"
 	"os"
 	"strings"
+
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/agent"
 )
 
 func sshAgent() ssh.AuthMethod {
@@ -26,14 +27,13 @@ func GetToken() (string, error) {
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
-
 	connection, err := ssh.Dial("tcp", "ssh.lagoon.amazeeio.cloud:32222", sshConfig)
 	if err != nil {
 		return "", fmt.Errorf("Failed to dial: %s", err)
 	}
 
 	session, err := connection.NewSession()
-	if(err != nil) {
+	if err != nil {
 		return "", err
 	}
 

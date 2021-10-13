@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/uselagoon/lagoon-facts-app/utils"
 	"github.com/machinebox/graphql"
+	"github.com/uselagoon/lagoon-facts-app/utils"
 	"golang.org/x/oauth2"
 )
 
@@ -28,7 +28,7 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 
 	sources := map[string]string{}
 
-	for i,e := range facts{
+	for i, e := range facts {
 		e.Environment = environmentId
 		facts[i] = e
 		if sources[e.Source] == "" {
@@ -48,8 +48,8 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 	if err != nil {
 		return err
 	}
-	var addFactMutation struct{
-		AddFacts []struct{
+	var addFactMutation struct {
+		AddFacts []struct {
 			Id int
 		}
 	}
@@ -62,7 +62,7 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 }
 `)
 
-	var factInput struct{
+	var factInput struct {
 		Facts []GatheredFact `json:"facts"`
 	}
 	factInput.Facts = facts
@@ -86,7 +86,7 @@ func getGraphqlClient() (*graphql.Client, error) {
 
 	token, err := utils.GetToken()
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
 
 	httpClient := oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{
@@ -138,7 +138,7 @@ func GetEnvironmentId(projectId int, environmentName string) (int, error) {
 
 	var environmentQuery struct {
 		EnvironmentByName struct {
-			Id int
+			Id   int
 			Name string
 		}
 	}
@@ -171,7 +171,7 @@ func DeleteFactsBySource(environmentId int, source string) error {
 		return err
 	}
 
-	var responseText struct{
+	var responseText struct {
 		Data string
 	}
 
