@@ -12,5 +12,6 @@ const(
 	Laravel FactCategory = "Laravel configuration"
 	Network FactCategory = "Network configuration"
 	Platform FactCategory = "Platform"
+	Framework FactCategory = "Framework"
 	ProgrammingLanguage FactCategory = "Programming language"
 )

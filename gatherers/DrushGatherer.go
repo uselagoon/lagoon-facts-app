@@ -43,7 +43,8 @@ func (p *drushGatherer) GatherFacts() ([]GatheredFact, error) {
 			Value:       p.DrupalVersion,
 			Source:      "drush_status",
 			Description: "Currently installed version of Drupal on the Environment",
-			Category:    Drupal,
+			Category:    Framework,
+			KeyFact: 	 true,
 		},
 		{
 			Name:        "drush-version",

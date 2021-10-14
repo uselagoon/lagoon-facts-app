@@ -7,7 +7,8 @@ type GatheredFact struct {
 	Source      string       `json:"source"`
 	Environment int          `json:"environment"`
 	Description string       `json:"description"`
-	Category    FactCategory `json:"-"` // `json:"category,omitempty"`
+	KeyFact    	bool 		 `json:"keyFact"`
+	Category    FactCategory `json:"category"` // `json:"category,omitempty"`
 }
 
 const (
