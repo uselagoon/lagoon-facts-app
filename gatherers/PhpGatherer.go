@@ -25,13 +25,13 @@ func (p *phpGatherer) AppliesToEnvironment() bool {
 }
 
 func (p *phpGatherer) GatherFacts() ([]GatheredFact, error) {
-
 	return []GatheredFact{
 		{
 			Name: "php-version",
 			Value: p.PhpVersion,
 			Source: "php-version",
-			Description: "This is the current running php version on the system",
+			Description: "This is the current running php version found",
+			KeyFact: true,
 			Category: ProgrammingLanguage,
 		},
 	}, nil
