@@ -4,16 +4,19 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/machinebox/graphql"
 	"github.com/uselagoon/lagoon-facts-app/utils"
 	"golang.org/x/oauth2"
 )
 
-const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
-const lagoonUIEndpoint = "https://dashboard.amazeeio.cloud"
 
 func Writefacts(projectName string, environmentName string, facts []GatheredFact) error {
+	lagoonUIEndpoint, exists := os.LookupEnv("LAGOON_UI_ENDPOINT")
+	if !exists {
+		lagoonUIEndpoint = "https://dashboard.amazeeio.cloud"
+	}
 
 	projectId, err := GetProjectId(projectName)
 	if err != nil {
@@ -84,6 +87,11 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 }
 
 func getGraphqlClient() (*graphql.Client, error) {
+	lagoonAPIEndpoint, exists := os.LookupEnv("LAGOON_API_ENDPOINT")
+	if !exists {
+		lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
+	}
+
 	ctx := context.Background()
 
 	token, err := utils.GetToken()
