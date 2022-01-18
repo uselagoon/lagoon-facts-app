@@ -1,4 +1,4 @@
-# amazeeio-facts-audit
+# Lagoon Facts App
 
 This application is run as part of the bootstrapping process of the Lagoon CLI pods.
 It is used to gather facts about the running environment and push them back up to the Lagoon Insights system.
@@ -25,8 +25,8 @@ The application is written in Go (GoLang), for more information about setting th
 
 As mentioned above, creating a new gatherer is fairly simple.
 
-Look at the requirements of the [`Gatherer` interface](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/defs.go#L14) and implement the `AppliesToEnvironment` and `GatherFacts` functions on a new structure.
-Then register the new gatherer by calling `RegisterGatherer` (for example, [here](https://github.com/bomoko/amazeeio-facts-audit/blob/main/gatherers/DrushGatherer.go#L56))
+Look at the requirements of the [`Gatherer` interface](https://github.com/uselagoon/lagoon-facts-app/blob/main/gatherers/defs.go#L14) and implement the `AppliesToEnvironment` and `GatherFacts` functions on a new structure.
+Then register the new gatherer by calling `RegisterGatherer` (for example, [here](https://github.com/uselagoon/lagoon-facts-app/blob/main/gatherers/DrushGatherer.go#L60))
 
 ## Running
 
