@@ -13,6 +13,7 @@ We run through each fact Gatherer, which determines whether it is able to be run
 * [Extending](#extending)
     * [Adding a new gatherer](#adding-a-new-gatherer)
 * [Running](#running)
+* [Arbitrary Facts](#arbitrary-facts)
 * [Building](#building)
 
 ## Setup
@@ -50,6 +51,29 @@ Although you will be doing a scan of your local machine, and will send this info
 **Not recommended** but might be required for some testing.
 
 The recommended way to use this application is from inside a lagoon container, assuming this container does not have go installed you will need to [build](#building) the application.
+
+## Arbitrary Facts
+
+If you would like to generate facts outside of the provided fact gatherers, you can write them to a file, and then have the `file gatherer` parse and write the facts to the backend.
+
+The structure of the file should follow closely the definition of a `GatheredFact` in `/gathers/defs.go`.
+
+The gatherer expects the incoming file to contain an array of facts, of the following format
+
+```
+[
+    {
+        name: "fact name",
+        value: "value stored against name",
+        source: "Where this fact is sourced from",
+        environment: <environment ID>,
+        description: "description of fact",
+        keyFact: true|false,
+        category: "See /gatheres/categories.go for values"
+    }
+]
+
+```
 
 ## Building
 
