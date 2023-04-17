@@ -3,11 +3,10 @@ package gatherers
 import (
 	"context"
 	"fmt"
-	"log"
-
 	"github.com/machinebox/graphql"
 	"github.com/uselagoon/lagoon-facts-app/utils"
 	"golang.org/x/oauth2"
+	"log"
 )
 
 const lagoonAPIEndpoint = "https://api.lagoon.amazeeio.cloud/graphql"
