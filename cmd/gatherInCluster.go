@@ -33,7 +33,6 @@ var gatherInClusterCmd = &cobra.Command{
 		//}
 
 		if tokenValue == "" {
-			//tokenValue = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbnZpcm9ubWVudElkIjoiMiIsIkVudmlyb25tZW50TmFtZSI6Im1haW4iLCJOYW1lc3BhY2UiOiJkZWxldGVtZSIsIlByb2plY3ROYW1lIjoiZGVsZXRlbWUifQ.r5hoa7-459Kl87fOinCIJPTkjbBw9rxOl2R8KKKQahQ"
 
 			if tokenFile == "" {
 				log.Fatal("Either a token or a token file needs to be passed as an argument")
