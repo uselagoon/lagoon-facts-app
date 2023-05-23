@@ -3,9 +3,12 @@ package gatherers
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/spf13/viper"
-	"github.com/uselagoon/insights-remote-lib"
+	"fmt"
 	"net/http"
+	"os"
+
+	"github.com/spf13/viper"
+	insightRemoteLib "github.com/uselagoon/insights-remote-lib"
 )
 
 func WriteFactsToInsightsRemote(token string, facts []GatheredFact) error {
@@ -20,9 +23,7 @@ func WriteFactsToInsightsRemote(token string, facts []GatheredFact) error {
 			Value:       fact.Value,
 			Source:      fact.Source,
 			Description: fact.Description,
-			Type:        "type",
 			Category:    string(fact.Category),
-			//Service:         fact.,
 		}
 
 		insightsRemoteFacts.Facts = append(insightsRemoteFacts.Facts, f)
@@ -33,6 +34,10 @@ func WriteFactsToInsightsRemote(token string, facts []GatheredFact) error {
 	req.Header.Set("Authorization", token)
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
-	_, err := client.Do(req)
+	response, err := client.Do(req)
+	if response.StatusCode != 200 {
+		fmt.Println(response.Body)
+		os.Exit(1)
+	}
 	return err
 }

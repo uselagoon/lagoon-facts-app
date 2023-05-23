@@ -3,11 +3,12 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uselagoon/lagoon-facts-app/gatherers"
-	"log"
-	"os"
 )
 
 var tokenValue string

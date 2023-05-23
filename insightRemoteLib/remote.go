@@ -14,9 +14,9 @@ type Fact struct {
 }
 
 type Facts struct {
-	EnvironmentId   string `json:"environment"`
+	EnvironmentId   int    `json:"environment"`
 	ProjectName     string `json:"projectName"`
 	EnvironmentName string `json:"environmentName"`
 	Facts           []Fact `json:"facts"`
-	InsightsType    string `json:"insightsType"`
+	// InsightsType    string `json:"insightsType"`
 }
