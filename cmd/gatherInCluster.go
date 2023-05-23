@@ -28,9 +28,9 @@ var gatherInClusterCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if tokenValue != "" && tokenFile != "" {
-			log.Fatal("Either a token or a token file needs to be passed as an argument, not both")
-		}
+		//if tokenValue != "" && tokenFile != "" {
+		//	log.Fatal("Either a token or a token file needs to be passed as an argument, not both")
+		//}
 
 		if tokenValue == "" {
 			//tokenValue = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbnZpcm9ubWVudElkIjoiMiIsIkVudmlyb25tZW50TmFtZSI6Im1haW4iLCJOYW1lc3BhY2UiOiJkZWxldGVtZSIsIlByb2plY3ROYW1lIjoiZGVsZXRlbWUifQ.r5hoa7-459Kl87fOinCIJPTkjbBw9rxOl2R8KKKQahQ"
@@ -49,7 +49,6 @@ var gatherInClusterCmd = &cobra.Command{
 				log.Fatal(err)
 			}
 			tokenValue = string(ba)
-
 		}
 
 		//set gatherer type to be static by default
@@ -105,7 +104,7 @@ var gatherInClusterCmd = &cobra.Command{
 
 func init() {
 	gatherInClusterCmd.PersistentFlags().StringVarP(&tokenValue, "token", "t", "", "The Lagoon insights remote token")
-	gatherInClusterCmd.PersistentFlags().StringVarP(&tokenFile, "token-file", "", "", "Read the Lagoon insights remote token from a file")
+	gatherInClusterCmd.PersistentFlags().StringVarP(&tokenFile, "token-file", "", "/var/run/secret/lagoon/dynamic/insights-token", "Read the Lagoon insights remote token from a file")
 	gatherInClusterCmd.PersistentFlags().BoolVarP(&dryRun, "dry-run", "d", false, "run gathers and print to screen without running write methods")
 	gatherInClusterCmd.PersistentFlags().StringVar(&insightsRemoteEndpoint, "insights-remote-endpoint", "http://localhost:10999/facts", "The Lagoon insights remote endpoint")
 	viper.BindPFlag("insights-remote-endpoint", gatherInClusterCmd.PersistentFlags().Lookup("insights-remote-endpoint"))
