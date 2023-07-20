@@ -30,13 +30,17 @@ func WriteFactsToInsightsRemote(token string, facts []GatheredFact) error {
 	}
 
 	bodyString, _ := json.Marshal(insightsRemoteFacts)
-	req, _ := http.NewRequest(http.MethodPost, viper.GetString("insights-remote-endpoint"), bytes.NewBuffer(bodyString))
+
+	fmt.Printf("Sending %v fact(s) to insights core\n", len(facts))
+
+	serviceEndpoint := viper.GetString("insights-remote-endpoint")
+	req, _ := http.NewRequest(http.MethodPost, serviceEndpoint, bytes.NewBuffer(bodyString))
 	req.Header.Set("Authorization", token)
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	response, err := client.Do(req)
 	if response.StatusCode != 200 {
-		fmt.Println(response.Body)
+		fmt.Printf("There was an error sending the facts to '%s' : %s\n", serviceEndpoint, response.Body)
 		os.Exit(1)
 	}
 	return err

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 
@@ -77,7 +76,6 @@ var gatherInClusterCmd = &cobra.Command{
 		}
 
 		if !dryRun {
-			fmt.Print(facts)
 			err := gatherers.WriteFactsToInsightsRemote(tokenValue, facts)
 			if err != nil {
 				log.Println(err.Error())

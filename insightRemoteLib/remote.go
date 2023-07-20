@@ -18,5 +18,4 @@ type Facts struct {
 	ProjectName     string `json:"projectName"`
 	EnvironmentName string `json:"environmentName"`
 	Facts           []Fact `json:"facts"`
-	// InsightsType    string `json:"insightsType"`
 }
