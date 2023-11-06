@@ -28,21 +28,14 @@ var gatherInClusterCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if tokenValue == "" {
-
 			if tokenFile == "" {
 				log.Fatal("Either a token or a token file needs to be passed as an argument")
 			}
-
-			_, err := os.Stat(tokenFile)
+			var err error
+			tokenValue, err = getTokenFromFile(tokenFile)
 			if err != nil {
-				log.Fatal(err)
+				log.Fatalf("Unable to load token: %v - %v", tokenFile, err.Error())
 			}
-
-			ba, err := os.ReadFile(tokenFile)
-			if err != nil {
-				log.Fatal(err)
-			}
-			tokenValue = string(ba)
 		}
 
 		//set gatherer type to be static by default
@@ -90,6 +83,19 @@ var gatherInClusterCmd = &cobra.Command{
 			}
 		}
 	},
+}
+
+func getTokenFromFile(tokenFile string) (string, error) {
+	_, err := os.Stat(tokenFile)
+	if err != nil {
+		return "", err
+	}
+
+	ba, err := os.ReadFile(tokenFile)
+	if err != nil {
+		return "", err
+	}
+	return string(ba), nil
 }
 
 //var GatherCommand = gatherCmd

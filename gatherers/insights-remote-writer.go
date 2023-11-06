@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	insightRemoteLib "github.com/uselagoon/insights-remote-lib"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -47,7 +48,12 @@ func WriteFactsToInsightsRemote(token string, facts []GatheredFact) error {
 	}
 
 	if response.StatusCode != 200 {
-		log.Fatalf("There was an error sending the facts to '%s' : %s\n", serviceEndpoint, response.Body)
+		bodyData, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+
+		log.Fatalf("There was an error sending the facts to '%s': %v- %v \n", serviceEndpoint, response.StatusCode, string(bodyData))
 	}
 
 	defer response.Body.Close()
