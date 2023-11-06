@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
-	insightRemoteLib "github.com/uselagoon/insights-remote-lib"
+	"github.com/uselagoon/lagoon-facts-app/insightRemoteLib"
 	"io/ioutil"
 	"log"
 	"net/http"
