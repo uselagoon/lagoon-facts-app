@@ -23,7 +23,6 @@ var gatherInClusterCmd = &cobra.Command{
 		//get the basic env vars
 		if argStatic && argDynamic {
 			log.Fatalf("Cannot use both 'static' and 'dynamic' only gatherers - exiting")
-			os.Exit(1)
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
