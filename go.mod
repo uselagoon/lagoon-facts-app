@@ -1,6 +1,6 @@
 module github.com/uselagoon/lagoon-facts-app
 
-go 1.13
+go 1.18
 
 require (
 	github.com/machinebox/graphql v0.2.2
