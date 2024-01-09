@@ -41,12 +41,10 @@ var gatherCmd = &cobra.Command{
 
 		if environmentName == "" || projectName == "" {
 			log.Fatalf("PROJECT OR ENVIRONMENT NOT SET - exiting")
-			os.Exit(1)
 		}
 
 		if argStatic && argDynamic {
 			log.Fatalf("Cannot use both 'static' and 'dynamic' only gatherers - exiting")
-			os.Exit(1)
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {

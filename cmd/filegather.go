@@ -2,13 +2,10 @@ package cmd
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-
 	"github.com/spf13/cobra"
 	"github.com/uselagoon/lagoon-facts-app/gatherers"
+	"io/ioutil"
+	"log"
 )
 
 var gatheredFileName string
@@ -24,12 +21,20 @@ var filegatherCmd = &cobra.Command{
 
 		//we can just unmarshall the file data into the facts ...
 		if gatheredFileName == "" {
-			fmt.Errorf("Filename should be passed as argument")
-			os.Exit(1)
+			log.Fatalf("Filename should be passed as argument")
 		}
 
-		file, _ := ioutil.ReadFile(gatheredFileName)
-		_ = json.Unmarshal([]byte(file), &facts)
+		file, err := ioutil.ReadFile(gatheredFileName)
+
+		if err != nil {
+			log.Fatalf("Error reading file: %v", err.Error())
+		}
+
+		err = json.Unmarshal([]byte(file), &facts)
+
+		if err != nil {
+			log.Fatalf("Error unmarshalling file %v: %v", gatheredFileName, err.Error())
+		}
 
 		if !dryRun {
 			err := gatherers.Writefacts(projectName, environmentName, facts)
