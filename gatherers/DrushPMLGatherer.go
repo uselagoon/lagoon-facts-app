@@ -26,7 +26,7 @@ type drushPmlEntry struct {
 
 func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 
-	err, stdOut, stdErr := utils.Shellout("drush pml --no-core --format=json 2> /dev/null")
+	err, stdOut, stdErr := utils.Shellout("drush pml --core --format=json 2> /dev/null")
 	if err != nil {
 		log.Printf("Drush pml gatherer cannot be applied: %v", stdErr)
 		return false
