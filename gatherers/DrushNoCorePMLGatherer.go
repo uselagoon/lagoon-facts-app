@@ -8,23 +8,15 @@ import (
 	"github.com/uselagoon/lagoon-facts-app/utils"
 )
 
-type drushPmlGatherer struct {
+type drushPmlNoCoreGatherer struct {
 	GatheredFacts []GatheredFact
 }
 
-func (p *drushPmlGatherer) GetGathererCmdType() string {
+func (p *drushPmlNoCoreGatherer) GetGathererCmdType() string {
 	return GATHERER_TYPE_STATIC
 }
 
-type drushPmlEntry struct {
-	Package string
-	Name    string
-	Type    string
-	Status  string
-	Version interface{}
-}
-
-func (p *drushPmlGatherer) AppliesToEnvironment() bool {
+func (p *drushPmlNoCoreGatherer) AppliesToEnvironment() bool {
 
 	err, stdOut, stdErr := utils.Shellout("drush pml --no-core --format=json 2> /dev/null")
 	if err != nil {
@@ -44,7 +36,7 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 			p.GatheredFacts = append(p.GatheredFacts, GatheredFact{
 				Name:        key,
 				Value:       fmt.Sprintf("%v", element.Version),
-				Source:      "drush_pml",
+				Source:      "drush_pml_nocore",
 				Description: "Status: " + element.Status,
 				Category:    Drupal,
 			})
@@ -54,10 +46,10 @@ func (p *drushPmlGatherer) AppliesToEnvironment() bool {
 	return true
 }
 
-func (p *drushPmlGatherer) GatherFacts() ([]GatheredFact, error) {
+func (p *drushPmlNoCoreGatherer) GatherFacts() ([]GatheredFact, error) {
 	return p.GatheredFacts, nil
 }
 
 func init() {
-	RegisterGatherer("Drupal Module List Gatherer", &drushPmlGatherer{})
+	RegisterGatherer("Drupal no-core Module List Gatherer", &drushPmlGatherer{})
 }
