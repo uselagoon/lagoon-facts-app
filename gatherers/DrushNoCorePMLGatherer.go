@@ -51,5 +51,5 @@ func (p *drushPmlNoCoreGatherer) GatherFacts() ([]GatheredFact, error) {
 }
 
 func init() {
-	RegisterGatherer("Drupal no-core Module List Gatherer", &drushPmlGatherer{})
+	RegisterGatherer("Drupal no-core Module List Gatherer", &drushPmlNoCoreGatherer{})
 }
