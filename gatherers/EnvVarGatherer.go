@@ -22,6 +22,7 @@ func (p *envVarGatherer) AppliesToEnvironment() bool {
 	var lagoonDomain = os.Getenv("LAGOON_DOMAIN")
 	var lagoonEnvType = os.Getenv("LAGOON_ENVIRONMENT_TYPE")
 	var composerVersion = os.Getenv("COMPOSER_VERSION")
+	var lagoonVersion = os.Getenv("LAGOON_VERSION")
 
 	envVars := map[string]envVar{
 		"LAGOON_DOMAIN": {
@@ -38,6 +39,11 @@ func (p *envVarGatherer) AppliesToEnvironment() bool {
 			Key:         "COMPOSER_VERSION",
 			Value:       composerVersion,
 			Description: "Composer version '" + composerVersion + "' was found",
+		},
+		"LAGOON_VERSION": {
+			Key:         "LAGOON_VERSION",
+			Value:       lagoonVersion,
+			Description: "Lagoon version '" + composerVersion + "' found",
 		},
 	}
 
