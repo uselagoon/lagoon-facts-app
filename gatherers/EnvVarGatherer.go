@@ -43,7 +43,7 @@ func (p *envVarGatherer) AppliesToEnvironment() bool {
 		"LAGOON_VERSION": {
 			Key:         "LAGOON_VERSION",
 			Value:       lagoonVersion,
-			Description: "Lagoon version '" + composerVersion + "' found",
+			Description: "Lagoon version '" + lagoonVersion + "' found",
 		},
 	}
 
