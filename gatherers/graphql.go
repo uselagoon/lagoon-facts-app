@@ -43,6 +43,32 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 		}
 	}
 
+	// let's split the array into multidimensional arrays in case we have huge fact payloads
+	var factMD [][]GatheredFact
+
+	const maxFactWrite = 100
+	for i := 0; i < len(facts); i += maxFactWrite {
+		end := i + maxFactWrite
+		if end > len(facts) {
+			end = len(facts)
+		}
+		factMD = append(factMD, facts[i:end])
+	}
+
+	for _, f := range factMD {
+		err := writeFactsToGraphql(err, f)
+		if err != nil {
+			return err
+		}
+	}
+
+	var factsUIUrl = fmt.Sprintf("%s/projects/%s/%s/facts", lagoonUIEndpoint, projectName, fmt.Sprintf("%s-%s", projectName, environmentName))
+	log.Printf("Successfully added facts to %s:%s \n %s", projectName, environmentName, factsUIUrl)
+
+	return nil
+}
+
+func writeFactsToGraphql(err error, facts []GatheredFact) error {
 	client, err := getGraphqlClient()
 	if err != nil {
 		log.Println(err)
@@ -75,10 +101,6 @@ func Writefacts(projectName string, environmentName string, facts []GatheredFact
 	if err := client.Run(ctx, req, &addFactMutation); err != nil {
 		log.Fatal(err)
 	}
-
-	var factsUIUrl = fmt.Sprintf("%s/projects/%s/%s/facts", lagoonUIEndpoint, projectName, fmt.Sprintf("%s-%s", projectName, environmentName))
-	log.Printf("Successfully added facts to %s:%s \n %s", projectName, environmentName, factsUIUrl)
-
 	return nil
 }
 
