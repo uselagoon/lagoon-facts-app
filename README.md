@@ -1,5 +1,8 @@
 # Lagoon Facts App
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10983/badge)](https://www.bestpractices.dev/projects/10983)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/uselagoon/lagoon-facts-app/badge)](https://securityscorecards.dev/viewer/?uri=github.com/uselagoon/lagoon-facts-app)
+
 This application is run as part of the bootstrapping process of the Lagoon CLI pods.
 It is used to gather facts about the running environment and push them back up to the Lagoon Insights system.
 
