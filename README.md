@@ -2,6 +2,7 @@
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10983/badge)](https://www.bestpractices.dev/projects/10983)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/uselagoon/lagoon-facts-app/badge)](https://securityscorecards.dev/viewer/?uri=github.com/uselagoon/lagoon-facts-app)
+[![coverage](https://raw.githubusercontent.com/uselagoon/lagoon-facts-app/badges/.badges/main/coverage.svg)](https://github.com/uselagoon/lagoon-facts-app/actions/workflows/coverage.yaml)
 
 This application is run as part of the bootstrapping process of the Lagoon CLI pods.
 It is used to gather facts about the running environment and push them back up to the Lagoon Insights system.
