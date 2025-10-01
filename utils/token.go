@@ -19,10 +19,15 @@ func sshAgent() ssh.AuthMethod {
 }
 
 func GetToken() (string, error) {
+	agentMethod := sshAgent()
+	if agentMethod == nil {
+		return "", errors.New("couldn't connect to ssh agent")
+	}
+
 	sshConfig := &ssh.ClientConfig{
 		User: "lagoon",
 		Auth: []ssh.AuthMethod{
-			sshAgent(),
+			agentMethod,
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
