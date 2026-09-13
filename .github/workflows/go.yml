@@ -4,11 +4,20 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+permissions: {}
 
 jobs:
 
   build:
+    permissions:
+      # create release
+      contents: write
+      # use OIDC token for signing
+      id-token: write
+      # required by attest-build-provenance
+      attestations: write
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -58,3 +67,20 @@ jobs:
         asset_path: /tmp/lagoon-facts
         asset_name: lagoon-facts
         asset_content_type: application/octet-stream
+
+    - name: Attach SBOM to release in SPDX JSON format
+      # https://docs.github.com/en/rest/dependency-graph/sboms?apiVersion=2022-11-28
+      run: |
+        gh api \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${{ github.repository }}/dependency-graph/sbom > sbom.spdx.json
+        gh release upload "${{ github.ref_name }}" sbom.spdx.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+      with:
+        subject-path: |
+          sbom.spdx.json
+          /tmp/lagoon-facts
